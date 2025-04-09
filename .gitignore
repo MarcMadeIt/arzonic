@@ -32,6 +32,3 @@ Thumbs.db
 .vscode/
 *.swp
 
-# Other files
-package-lock.json
-yarn.lock
