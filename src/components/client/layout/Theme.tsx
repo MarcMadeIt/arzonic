@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { FaMoon, FaSun } from "react-icons/fa6";
+import { FaMoon } from "react-icons/fa6";
 import { MdSunny } from "react-icons/md";
 
 const Theme = () => {

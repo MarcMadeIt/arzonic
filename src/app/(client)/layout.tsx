@@ -3,7 +3,6 @@
 import Header from "@/components/client/layout/Header";
 import { FaAngleUp } from "react-icons/fa6";
 import { useEffect, useState } from "react";
-import Script from "next/script";
 
 export default function ClientLayout({
   children,
