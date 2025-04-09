@@ -1,9 +1,12 @@
+import Hero from "@/components/client/home/Hero";
 import React from "react";
 
 const Home = () => {
   return (
     <>
-      <section className="h-full"></section>
+      <section className="h-full">
+        <Hero/>
+      </section>
     </>
   );
 };

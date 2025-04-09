@@ -27,12 +27,6 @@ export default function ClientLayout({
 
   return (
     <>
-      <Script
-        async
-        defer
-        src="https://stats.hhservice.dk/script.js"
-        data-website-id="92b19d71-7695-4a2a-bf87-2ab08ec7cf04"
-      />
       <div className="sm:h-lvh h-dvh max-w-screen-2xl mx-auto 2xl:px-3">
         <header>
           <Header />
