@@ -8,38 +8,28 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
+
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
 
-      - name: 🔄 Pull latest code from GitHub
+      - name: 📦 Install dependencies
         run: |
-          echo "⚠️ Pulling latest changes..."
-          cd /home/arzonic/htdocs/arzonic.com
-          git reset --hard HEAD  
-          git pull origin main --force
-
-      - name: 📦 Install dependencies (Optimized)
-        run: |
-          echo "⚠️ Installing dependencies..."
-          cd /home/arzonic/htdocs/arzonic.com
+          echo "📦 Installing dependencies..."
           npm ci
 
       - name: 🔧 Build Next.js project
         run: |
           echo "⚡ Building Next.js app..."
-          cd /home/arzonic/htdocs/arzonic.com
           npm run build
 
-      - name: 🚀 Restart PM2 without creating a new instance
+      - name: 🚀 Restart PM2 process
         run: |
           echo "🔄 Restarting PM2 process..."
           export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  
-
-          cd /home/arzonic/htdocs/arzonic.com
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
           if pm2 list | grep -q "arzonic-app"; then
             echo "⚡ Process found! Reloading..."
