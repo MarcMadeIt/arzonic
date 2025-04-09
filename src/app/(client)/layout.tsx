@@ -27,7 +27,7 @@ export default function ClientLayout({
 
   return (
     <>
-      <div className="sm:h-lvh h-dvh max-w-screen-2xl mx-auto 2xl:px-3">
+      <div className="sm:h-lvh h-dvh max-w-screen-2xl mx-auto 2xl:px-3 mt-[93px]">
         <header>
           <Header />
         </header>
