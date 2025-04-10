@@ -15,14 +15,29 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: 🔄 Pull latest code from GitHub
+        run: |
+          echo "⚠️ Pulling latest changes..."
+          cd /home/arzonic/htdocs/arzonic.com
+          git reset --hard HEAD
+          git pull origin main --force
+
+      - name: 🧾 List contents of public folder
+        run: |
+          cd /home/arzonic/htdocs/arzonic.com
+          echo "📂 Contents of public/:"
+          ls -la public/
+
       - name: 📦 Install dependencies
         run: |
           echo "📦 Installing dependencies..."
-          npm install
+          cd /home/arzonic/htdocs/arzonic.com
+          npm ci
 
       - name: 🔧 Build Next.js project
         run: |
           echo "⚡ Building Next.js app..."
+          cd /home/arzonic/htdocs/arzonic.com
           npm run build
 
       - name: 🚀 Restart PM2 process
@@ -30,6 +45,8 @@ jobs:
           echo "🔄 Restarting PM2 process..."
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+          cd /home/arzonic/htdocs/arzonic.com
 
           if pm2 list | grep -q "arzonic-app"; then
             echo "⚡ Process found! Reloading..."
