@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
+import React, { useEffect, useRef } from "react";
+import * as THREE from "three";
+import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 
 const ThreeAnimation: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -13,7 +13,12 @@ const ThreeAnimation: React.FC = () => {
     const { clientWidth, clientHeight } = mountRef.current;
 
     // Camera control
-    const camera = new THREE.PerspectiveCamera(75, clientWidth / clientHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      clientWidth / clientHeight,
+      0.1,
+      1000
+    );
     camera.position.set(0, 0, 4);
 
     // Renderer
@@ -35,12 +40,12 @@ const ThreeAnimation: React.FC = () => {
     // Load the FBX Model
     const loader = new FBXLoader();
     loader.load(
-      '/models/laptop.fbx',
+      "/models/laptop.fbx",
       (fbx) => {
         // bounding box size
         const box = new THREE.Box3().setFromObject(fbx);
         const size = box.getSize(new THREE.Vector3()).length();
-        const center = box.getCenter(new THREE.Vector3());
+        // const center = box.getCenter(new THREE.Vector3());
 
         // Scale
         const desiredSize = 5;
@@ -71,7 +76,7 @@ const ThreeAnimation: React.FC = () => {
       },
       undefined, // omit progress callback
       (error) => {
-        console.error('Error loading FBX model:', error);
+        console.error("Error loading FBX model:", error);
       }
     );
 
@@ -98,10 +103,10 @@ const ThreeAnimation: React.FC = () => {
       camera.updateProjectionMatrix();
       renderer.setSize(clientWidth, clientHeight);
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
       mountRef.current?.removeChild(renderer.domElement);
     };
   }, []);
