@@ -4,18 +4,16 @@ import Image from "next/image";
 import React from "react";
 import dynamic from "next/dynamic";
 
-// Dynamically import the ThreeAnimation component to ensure it only renders on the client.
-const ThreeAnimation = dynamic(
-  () => import("../../threeAnimation"),
-  { ssr: false }
-);
+const ThreeAnimation = dynamic(() => import("../../threeAnimation"), {
+  ssr: false,
+});
 
 const Hero = () => {
   return (
-    <div className="flex lg:flex-row flex-col-reverse items-center justify-between h-full px-10">
+    <div className="flex lg:flex-row flex-col items-center justify-between h-full pt-10">
       <div className="flex-1 flex flex-col gap-5">
         <div className="flex gap-2 items-center">
-          <div className="flex relative h-auto">
+          <div className="flex relative h-auto w-10 sm:w-16">
             <Image
               src="/danmark.png"
               alt=""
@@ -24,14 +22,16 @@ const Hero = () => {
               className="rounded-lg"
             />
           </div>
-          <h1 className="text-4xl">MODERN WEB AGENCY</h1>
+          <h1 className="text-xl sm:text-4xl">MODERN WEB AGENCY</h1>
         </div>
         <div>
-          <p>
-            We specialize in building high-performance websites and immersive 3D experiences using modern, custom-built technology — no templates, no WordPress.
+          <p className="text-sm sm:text-base">
+            We specialize in building high-performance websites and immersive 3D
+            experiences using modern, custom-built technology — no templates, no
+            WordPress.
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 text-smfac€€€€ sm:text-lg">
           <span>Custom Websites</span>
           <span>3D Design</span>
           <span>Web Applications</span>

@@ -51,6 +51,9 @@ const Header = () => {
       <nav className="flex-none">
         <ul className="menu w-full md:menu-lg menu-horizontal font-bold md:font-medium gap-3 md:gap-5 items-center hidden md:flex">
           <li>
+            <Link href="/solutions">Solutions</Link>
+          </li>
+          <li>
             <Link href="/cases">Cases</Link>
           </li>
           <li>
@@ -59,7 +62,7 @@ const Header = () => {
           <li>
             <Link
               href="/contact"
-              className="btn btn-outline text-base-content hover:btn-secondary "
+              className="btn btn-outline text-base-content hover:btn-secondary"
             >
               Contact
             </Link>
@@ -84,15 +87,15 @@ const Header = () => {
               aria-label="close sidebar"
               className="drawer-overlay"
             ></label>
-            <ul className="menu menu-lg bg-base-100 text-base-content min-h-full w-72 p-4 pt-20 gap-2 items-center relative">
+            <ul className="menu menu-lg bg-base-100 text-base-content min-h-full w-96 p-4 pt-20 gap-2 items-center relative">
               <li className="absolute top-1 right-1">
                 <label htmlFor="my-drawer-4">
                   <FaXmark size={30} />
                 </label>
               </li>
               <li className="text-2xl font-bold">
-                <Link href="/" onClick={handleCloseDrawer}>
-                  Home
+                <Link href="/solutions" onClick={handleCloseDrawer}>
+                  Solutions
                 </Link>
               </li>
               <li className="text-2xl font-bold">

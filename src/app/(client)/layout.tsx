@@ -26,11 +26,11 @@ export default function ClientLayout({
 
   return (
     <>
-      <div className="sm:h-lvh h-dvh max-w-screen-2xl mx-auto 2xl:px-3 mt-[93px]">
+      <div className="sm:h-lvh h-dvh max-w-screen-2xl mx-auto 2xl:px-3 pt-[64px] md:pt-[93px]">
         <header>
           <Header />
         </header>
-        <main>{children}</main>
+        <main className="p-7">{children}</main>
         <footer></footer>
 
         {showScroll && (
