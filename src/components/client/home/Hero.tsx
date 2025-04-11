@@ -12,14 +12,14 @@ const Hero = () => {
   return (
     <div className="flex lg:flex-row flex-col items-center justify-between h-full pt-10">
       <div className="flex-1 flex flex-col gap-5">
-        <div className="flex gap-2 items-center">
-          <div className="flex relative h-auto w-10 sm:w-16">
+        <div className="flex gap-3 items-center">
+          <div className="flex relative">
             <Image
               src="/danmark.png"
               alt=""
               width={50}
               height={50}
-              className="rounded-lg"
+              className=""
             />
           </div>
           <h1 className="text-xl sm:text-4xl">MODERN WEB AGENCY</h1>

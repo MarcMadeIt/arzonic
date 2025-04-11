@@ -6,6 +6,7 @@ import Link from "next/link";
 
 import { FaBars, FaFacebook, FaInstagram, FaXmark } from "react-icons/fa6";
 import Theme from "./Theme";
+import Image from "next/image";
 
 const Header = () => {
   const pathname = usePathname();
@@ -44,8 +45,9 @@ const Header = () => {
   return (
     <div className="navbar fixed top-0 bg-base-100 inset-x-0 z-50 max-w-[1536px] mx-auto p-2 md:p-4 flex justify-between items-center 2xl:rounded-b-lg">
       <div className="flex-1">
-        <Link className="pl-4 font-bold text-3xl tracking-wider" href="/">
-          Arzonic
+        <Link className="cursor-pointer pl-4 flex items-center gap-2" href="/">
+          <Image src="/logo-arzonic.png" alt="" width={60} height={60} />
+          <span className=" font-bold text-3xl tracking-wider">Arzonic</span>
         </Link>
       </div>
       <nav className="flex-none">
