@@ -19,14 +19,14 @@ const ReviewsListChange = ({ onViewChange }: ReviewListChangeProps) => {
         className={`tab ${activeView === "cards" ? "tab-active" : ""}`}
         onClick={() => handleViewChange("cards")}
       >
-        Kort
+        Cards
       </a>
       <a
         role="tab"
         className={`tab ${activeView === "list" ? "tab-active" : ""}`}
         onClick={() => handleViewChange("list")}
       >
-        Liste
+        Lists
       </a>
     </div>
   );

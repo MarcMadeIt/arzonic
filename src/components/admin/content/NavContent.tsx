@@ -6,7 +6,7 @@ import Cases from "./cases/Cases";
 import Reviews from "./reviews/Reviews";
 
 const NavContent = () => {
-  const [activeTab, setActiveTab] = useState("news");
+  const [activeTab, setActiveTab] = useState("cases");
   return (
     <div className="w-full">
       <div
@@ -16,11 +16,11 @@ const NavContent = () => {
         <button
           role="tab"
           className={`tab gap-2  ${
-            activeTab === "news"
-              ? "bg-neutral text-neutral-content rounded-lg shadow-md"
+            activeTab === "cases"
+              ? "tab-active bg-base-200 rounded-lg shadow-md"
               : ""
           }`}
-          onClick={() => setActiveTab("news")}
+          onClick={() => setActiveTab("cases")}
         >
           <FaRegNewspaper />
           Cases
@@ -29,7 +29,7 @@ const NavContent = () => {
           role="tab"
           className={`tab gap-2  ${
             activeTab === "reviews"
-              ? "bg-neutral text-neutral-content rounded-lg shadow-md"
+              ? "tab-active bg-base-200 rounded-lg shadow-md"
               : ""
           }`}
           onClick={() => setActiveTab("reviews")}
@@ -40,13 +40,13 @@ const NavContent = () => {
       </div>
 
       <div className="mt-3 md:mt-5">
-        {activeTab === "news" && (
-          <div className="bg-base-100 rounded-lg shadow-md p-5 md:p-7">
+        {activeTab === "cases" && (
+          <div className="bg-base-200 rounded-lg shadow-md p-5 md:p-7">
             <Cases />
           </div>
         )}
         {activeTab === "reviews" && (
-          <div className="bg-base-100 rounded-lg shadow-md p-5 md:p-7">
+          <div className="bg-base-200  rounded-lg shadow-md p-5 md:p-7">
             <Reviews />
           </div>
         )}

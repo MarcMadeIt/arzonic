@@ -2,11 +2,11 @@
 
 import React, { useState } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
-import CaseList from "./CaseList";
-import CasePagination from "./CasePagination";
-import CaseListChange from "./CaseListChange";
+import CasesPagination from "./CasesPagination";
 import CreateCase from "./createCase/CreateCase";
 import UpdateCase from "./updateCase/UpdateCase";
+import CasesListChange from "./CasesListChange";
+import CasesList from "./CasesList";
 
 const Cases = () => {
   const [view, setView] = useState<"cards" | "list">("cards");
@@ -42,7 +42,7 @@ const Cases = () => {
             className="btn btn-ghost"
           >
             <FaAngleLeft />
-            Tilbage
+            Back
           </button>
           <CreateCase onCaseCreated={handleCaseCreated} />
         </div>
@@ -53,7 +53,7 @@ const Cases = () => {
             className="btn btn-ghost"
           >
             <FaAngleLeft />
-            Tilbage
+            Back
           </button>
           <UpdateCase
             newsId={selectedCaseId}
@@ -67,11 +67,11 @@ const Cases = () => {
               onClick={() => setShowCreateCase(true)}
               className="btn btn-primary"
             >
-              Opret sag
+              Create Case
             </button>
-            <CaseListChange onViewChange={handleViewChange} />
+            <CasesListChange onViewChange={handleViewChange} />
           </div>
-          <CaseList
+          <CasesList
             view={view}
             page={page}
             setTotal={setTotal}
@@ -81,7 +81,9 @@ const Cases = () => {
             }}
           />
           <div className="flex w-full justify-center">
-            <CasePagination page={page} setPage={setPage} total={total} />
+            {total > 6 && (
+              <CasesPagination page={page} setPage={setPage} total={total} />
+            )}
           </div>
         </>
       )}

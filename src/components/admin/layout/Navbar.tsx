@@ -7,62 +7,64 @@ import { usePathname } from "next/navigation";
 import { FaComment, FaGear, FaHouse, FaList } from "react-icons/fa6";
 import { readUserSession } from "@/lib/auth/readUserSession";
 import Image from "next/image";
+import { MdContentCopy, MdDashboard, MdMail, MdSettings } from "react-icons/md";
+import Theme from "@/components/client/layout/Theme";
 
 const Navbar = () => {
   const pathname = usePathname();
-  // const [role, setRole] = useState<string | null>(null);
+  const [role, setRole] = useState<string | null>(null);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const session = await readUserSession();
-  //     if (session) {
-  //       setRole(session.role);
-  //     } else {
-  //       setRole(null);
-  //     }
-  //   })();
-  // }, []);
+  useEffect(() => {
+    (async () => {
+      const session = await readUserSession();
+      if (session) {
+        setRole(session.role);
+      } else {
+        setRole(null);
+      }
+    })();
+  }, []);
 
   return (
-    <div className="flex flex-col items-center justify-between  bg-base-100 rounded-lg sm:fixed sm:h-full md:py-0 md:pr-0">
+    <div className="flex flex-col items-center justify-between bg-base-200 rounded-lg sm:fixed sm:h-full md:py-0 md:pr-0">
       <div className="flex flex-col sm:gap-5 h-full ">
         <div className="flex flex-col items-center justify-center h-32 w-full text-xl">
-          <Image src="/logo-arzonic.png" alt="" width={80} height={80} />
+          <Image src="/logo-arzonic.png" alt="" width={60} height={60} />
           <span className="font-bold">ADMIN</span>
         </div>
         <div className="hidden sm:flex">
           <ul className="menu menu-lg gap-2 rounded-box w-56 xl:w-72">
             <li>
               <Link
-                className={pathname === "/admin" ? "active" : ""}
+                className={pathname === "/admin" ? "menu-active" : ""}
                 href="/admin"
               >
-                Overblik
+                Overview
               </Link>
             </li>
             <li>
               <Link
-                className={pathname === "/admin/content" ? "active" : ""}
+                className={pathname === "/admin/content" ? "menu-active" : ""}
                 href="/admin/content"
               >
-                Indhold
+                Content
               </Link>
             </li>
             <li>
               <Link
-                className={pathname === "/admin/messages" ? "active" : ""}
+                className={pathname === "/admin/messages" ? "menu-active" : ""}
                 href="/admin/messages"
               >
-                Henvendelser
+                Requests
               </Link>
             </li>
             {/* {role === "admin" && ( */}
             <li>
               <Link
-                className={pathname === "/admin/settings" ? "active" : ""}
+                className={pathname === "/admin/settings" ? "menu-active" : ""}
                 href="/admin/settings"
               >
-                Indstillinger
+                Settings
               </Link>
             </li>
             {/* )} */}
@@ -107,9 +109,12 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
-      <span className="text-[11px] items-center justify-center p-4 hidden sm:flex">
-        © 2025 Crafted by Marccode
-      </span>
+      <div className="flex flex-col gap-10 items-center justify-center w-full p-4 absolute bottom-0">
+        <span className="text-zinc-400 text-[11px] flex items-center justify-center">
+          © {new Date().getFullYear()} Powered by{" "}
+          <span className="font-semibold">Arzonic</span>
+        </span>
+      </div>
     </div>
   );
 };

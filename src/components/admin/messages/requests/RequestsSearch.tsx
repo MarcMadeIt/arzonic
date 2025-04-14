@@ -27,7 +27,7 @@ const RequestsSearch = ({
 
   return (
     <div className="flex items-center justify-between">
-      <label className="input input-bordered input-md flex items-center gap-2">
+      <label className="input input-bordered input-ghost bg-base-100 input-md flex items-center gap-2">
         <input
           type="text"
           className="grow"

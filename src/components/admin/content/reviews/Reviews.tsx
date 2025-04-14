@@ -42,7 +42,7 @@ const Reviews = () => {
             className="btn btn-ghost"
           >
             <FaAngleLeft />
-            Tilbage
+            Back
           </button>
           <CreateReview onReviewCreated={handleReviewCreated} />
         </div>
@@ -53,7 +53,7 @@ const Reviews = () => {
             className="btn btn-ghost"
           >
             <FaAngleLeft />
-            Tilbage
+            Back
           </button>
           <UpdateReview
             reviewId={selectedReviewId}
@@ -67,7 +67,7 @@ const Reviews = () => {
               onClick={() => setShowCreateReview(true)}
               className="btn btn-primary"
             >
-              Opret anmeldelse
+              Create Review
             </button>
             <ReviewsListChange onViewChange={handleViewChange} />
           </div>
@@ -80,9 +80,16 @@ const Reviews = () => {
               setShowUpdateReview(true);
             }}
           />
-          <div className="flex w-full justify-center">
-            <ReviewsPagination page={page} setPage={setPage} total={total} />
-          </div>
+          {total > 0 &&
+            total > 6 && ( // Ensure pagination only shows if there are reviews
+              <div className="flex w-full justify-center">
+                <ReviewsPagination
+                  page={page}
+                  setPage={setPage}
+                  total={total}
+                />
+              </div>
+            )}
         </>
       )}
       {showToast && (

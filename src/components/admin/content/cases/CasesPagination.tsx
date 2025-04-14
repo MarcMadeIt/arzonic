@@ -7,7 +7,7 @@ interface NewsPaginationProps {
   total: number;
 }
 
-const NewsPagination = ({ page, setPage, total }: NewsPaginationProps) => {
+const CasesPagination = ({ page, setPage, total }: NewsPaginationProps) => {
   const totalPages = Math.ceil(total / 6);
 
   const handlePrevious = () => {
@@ -43,4 +43,4 @@ const NewsPagination = ({ page, setPage, total }: NewsPaginationProps) => {
   );
 };
 
-export default NewsPagination;
+export default CasesPagination;

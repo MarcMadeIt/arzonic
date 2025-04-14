@@ -513,9 +513,9 @@ export async function getAllCases(page: number = 1, limit: number = 6) {
     }
 
     return { cases: data, total: count || 0 };
-  } catch (err) {
-    console.error("Unexpected error during fetching cases:", err);
-    throw err;
+  } catch (error) {
+    console.error(`Failed to fetch cases: ${error.message}`);
+    return { cases: [], total: 0 }; // Fallback response
   }
 }
 
@@ -605,10 +605,10 @@ export async function getAllReviews(page: number = 1, limit: number = 6) {
       throw new Error(`Failed to fetch reviews: ${error.message}`);
     }
 
-    return { reviews: data, total: count || 0 };
-  } catch (err) {
-    console.error("Unexpected error during fetching reviews:", err);
-    throw err;
+    return { reviews: data || [], total: count || 0 }; // Ensure fallback to empty array and zero
+  } catch (error) {
+    console.error(`Failed to fetch reviews: ${error.message}`);
+    return { reviews: [], total: 0 }; // Fallback response
   }
 }
 

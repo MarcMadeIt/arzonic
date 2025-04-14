@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" type="image/png" href="/favicon1.png" />
+        <link rel="icon" type="image/png" href="/logo-arzonic.png" />
         {/* SLET DENNE UNDER, NÅR FÆRDIG, DET LUKKER FOR SEO  */}
         <meta name="robots" content="noindex, nofollow" />
       </head>

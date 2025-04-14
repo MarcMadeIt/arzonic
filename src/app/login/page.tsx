@@ -112,7 +112,7 @@ const LoginPage = () => {
           {loading ? "Logger ind..." : "Login"}
         </button>
       </form>
-      <span className=" text-[11px] items-center justify-center p-4 absolute bottom-0">
+      <span className="text-zinc-400 text-[11px] items-center justify-center p-4 absolute bottom-0">
         © {new Date().getFullYear()} Powered by{" "}
         <span className="font-semibold">Arzonic</span>
       </span>

@@ -22,7 +22,7 @@ interface CaseItem {
   imageAfter: string | null;
 }
 
-const FALLBACK_IMAGE = "/demo.webp";
+const FALLBACK_IMAGE = "/demo.jpg";
 
 const CasesList = ({ view, page, setTotal, onEditCase }: CasesListProps) => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -36,9 +36,11 @@ const CasesList = ({ view, page, setTotal, onEditCase }: CasesListProps) => {
       setLoading(true);
       const { cases, total } = await getAllCases(page);
       setCaseItems(cases || []);
-      setTotal(total);
+      setTotal(total || 0);
     } catch (error) {
       console.error("Failed to fetch cases:", error);
+      setCaseItems([]);
+      setTotal(0);
     } finally {
       setLoading(false);
     }
@@ -90,7 +92,11 @@ const CasesList = ({ view, page, setTotal, onEditCase }: CasesListProps) => {
       {loading ? (
         <div className="flex justify-center gap-3 items-center">
           <span className="loading loading-spinner loading-md"></span>
-          Indhenter data...
+          Loading Cases...
+        </div>
+      ) : caseItems.length === 0 ? (
+        <div className="flex justify-center items-center h-40">
+          <p className="text-lg text-gray-500">No cases available</p>
         </div>
       ) : editingCaseId ? (
         <UpdateCase newsId={editingCaseId} onNewsUpdated={handleCaseUpdated} />

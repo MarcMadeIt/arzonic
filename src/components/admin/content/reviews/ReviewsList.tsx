@@ -34,9 +34,11 @@ const ReviewsList = ({
       setLoading(true);
       const { reviews, total } = await getAllReviews(page);
       setReviewItems(reviews || []);
-      setTotal(total);
+      setTotal(total || 0);
     } catch (error) {
       console.error("Failed to fetch reviews:", error);
+      setReviewItems([]);
+      setTotal(0);
     } finally {
       setLoading(false);
     }
@@ -69,7 +71,11 @@ const ReviewsList = ({
       {loading ? (
         <div className="flex justify-center gap-3 items-center">
           <span className="loading loading-spinner loading-md"></span>
-          Indhenter data...
+          Loading Reviews...
+        </div>
+      ) : reviewItems.length === 0 ? (
+        <div className="flex justify-center items-center h-40">
+          <p className="text-lg text-gray-500">No review available</p>
         </div>
       ) : (
         <>

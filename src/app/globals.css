@@ -8,7 +8,7 @@
   color-scheme: "dark";
   --color-base-100: #111;
   --color-base-200: #171717;
-  --color-base-300: #070707;
+  --color-base-300: #202020;
   --color-base-content: #E4E4E4;
   --color-primary: #02776F;
   --color-primary-content: oklch(98% 0.003 247.858);
@@ -16,8 +16,8 @@
   --color-secondary-content: #E4E4E4;
   --color-accent: oklch(27% 0.046 192.524);
   --color-accent-content: oklch(98% 0 0);
-  --color-neutral: #171717;
-  --color-neutral-content: oklch(98% 0.001 106.423);
+  --color-neutral: #111;
+  --color-neutral-content: #e4e4e4;
   --color-info: oklch(50% 0.134 242.749);
   --color-info-content: oklch(29% 0.066 243.157);
   --color-success: oklch(62% 0.194 149.214);
@@ -41,8 +41,8 @@
   default: false;
   prefersdark: false;
   color-scheme: "light";
-  --color-base-100: oklch(92% 0.004 286.32);
-  --color-base-200: oklch(87% 0.006 286.286);
+  --color-base-100: #fff;
+  --color-base-200: #fdfdfd;
   --color-base-300: oklch(87% 0.006 286.286);
   --color-base-content: #171717;
   --color-primary: oklch(51% 0.096 186.391);

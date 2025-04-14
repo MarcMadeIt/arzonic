@@ -32,7 +32,6 @@ export default function ClientLayout({
         </header>
         <main className="p-7">{children}</main>
         <footer></footer>
-
         {showScroll && (
           <button
             onClick={scrollToTop}

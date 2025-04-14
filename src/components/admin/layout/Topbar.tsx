@@ -1,4 +1,5 @@
 "use client";
+import Theme from "@/components/client/layout/Theme";
 import { signOut } from "@/lib/server/actions";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -12,16 +13,16 @@ const Topbar = () => {
   const pathname = usePathname();
 
   const pageTitles: PageTitleMapping = {
-    "/admin": "Overblik",
-    "/admin/content": "Indhold",
-    "/admin/messages": "Henvendelser",
-    "/admin/settings": "Indstillinger",
+    "/admin": "Overview",
+    "/admin/content": "Content",
+    "/admin/messages": "Requests",
+    "/admin/settings": "Settings",
   };
 
   const currentTitle = pageTitles[pathname] || "Unknown Page";
 
   return (
-    <div className="navbar bg-base-100 shadow-sm w-full rounded-md pl-5 h-14 flex items-center justify-between">
+    <div className="navbar bg-base-200 shadow-sm w-full rounded-md pl-5 h-14 flex items-center justify-between">
       <div className="flex-1">
         <a className="text-lg md:text-xl font-semibold tracking-wide">
           {currentTitle}
@@ -37,6 +38,9 @@ const Topbar = () => {
             tabIndex={0}
             className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow-lg ring-1 ring-black ring-opacity-5"
           >
+            <li>
+              <Theme />{" "}
+            </li>
             <li>
               <button onClick={signOut}>Log ud</button>
             </li>
