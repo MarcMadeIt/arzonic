@@ -34,7 +34,14 @@ const CreateCase = ({ onCaseCreated }: { onCaseCreated: () => void }) => {
     }
 
     try {
-      await createCase(company_name, desc, city, country, image || undefined);
+      // Adjust the arguments passed to createCase based on its definition
+      await createCase({
+        company_name,
+        desc,
+        city,
+        country,
+        image: image || undefined,
+      });
 
       setCompanyName("");
       setDesc("");

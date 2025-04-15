@@ -253,12 +253,19 @@ export async function updateUser(
 
 // CASES
 
-export async function createCase(
-  title: string,
-  desc: string,
-  city: string,
-  image?: File
-): Promise<void> {
+export async function createCase({
+  company_name,
+  desc,
+  city,
+  country,
+  image,
+}: {
+  company_name: string;
+  desc: string;
+  city: string;
+  country: string;
+  image?: File;
+}): Promise<void> {
   const supabase = await createServerClientInstance();
 
   try {
@@ -320,9 +327,10 @@ export async function createCase(
 
     const { error } = await supabase.from("cases").insert([
       {
-        title,
+        company_name,
         desc,
         city,
+        country,
         image: imageUrl,
         creator_id: userData.user.id,
       },
