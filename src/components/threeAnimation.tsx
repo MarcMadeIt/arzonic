@@ -153,14 +153,6 @@ const ThreeAnimation: React.FC = () => {
       }
     );
 
-    // Animation Loop
-    const clock = new THREE.Clock();
-    const animate = () => {
-      requestAnimationFrame(animate);
-      renderer.render(scene, camera);
-    };
-    animate();
-
     // Responsive Handling
     const handleResize = () => {
       if (!mountRef.current) return;
