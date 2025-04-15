@@ -99,7 +99,7 @@ const CasesList = ({ view, page, setTotal, onEditCase }: CasesListProps) => {
           <p className="text-lg text-gray-500">No cases available</p>
         </div>
       ) : editingCaseId ? (
-        <UpdateCase newsId={editingCaseId} onNewsUpdated={handleCaseUpdated} />
+        <UpdateCase caseId={editingCaseId} onNewsUpdated={handleCaseUpdated} />
       ) : (
         <>
           {view === "cards" ? (
