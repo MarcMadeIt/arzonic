@@ -257,17 +257,12 @@ export async function createCase(
   title: string,
   desc: string,
   city: string,
-  formType: "normal" | "beforeAfter",
-  image?: File,
-  imageBefore?: File,
-  imageAfter?: File
+  image?: File
 ): Promise<void> {
   const supabase = await createServerClientInstance();
 
   try {
     let imageUrl: string | null = null;
-    let imageBeforeUrl: string | null = null;
-    let imageAfterUrl: string | null = null;
 
     const uploadFile = async (file: File, folder: string) => {
       const fileExt = "webp";
@@ -314,17 +309,8 @@ export async function createCase(
       return data.publicUrl;
     };
 
-    if (formType === "normal" && image) {
-      imageUrl = await uploadFile(image, "normal");
-    }
-
-    if (formType === "beforeAfter") {
-      if (imageBefore) {
-        imageBeforeUrl = await uploadFile(imageBefore, "beforeAfter");
-      }
-      if (imageAfter) {
-        imageAfterUrl = await uploadFile(imageAfter, "beforeAfter");
-      }
+    if (image) {
+      imageUrl = await uploadFile(image, "cases");
     }
 
     const { data: userData } = await supabase.auth.getUser();
@@ -337,10 +323,7 @@ export async function createCase(
         title,
         desc,
         city,
-        formType,
         image: imageUrl,
-        imageBefore: imageBeforeUrl,
-        imageAfter: imageAfterUrl,
         creator_id: userData.user.id,
       },
     ]);
