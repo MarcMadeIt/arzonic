@@ -57,16 +57,16 @@ const Navbar = () => {
                 Requests
               </Link>
             </li>
-            {/* {role === "admin" && ( */}
-            <li>
-              <Link
-                className={pathname === "/admin/settings" ? "menu-active" : ""}
-                href="/admin/settings"
-              >
-                Settings
-              </Link>
-            </li>
-            {/* )} */}
+            {role === "admin" && (
+              <li>
+                <Link
+                  className={pathname === "/admin/settings" ? "menu-active" : ""}
+                  href="/admin/settings"
+                >
+                  Settings
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
         <div className="flex flex-col items-center sm:hidden fixed bottom-5 left-1/2 transform -translate-x-1/2 justify-center z-30 max-w-[300px] w-full">
