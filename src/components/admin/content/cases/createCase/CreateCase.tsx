@@ -5,8 +5,9 @@ const CreateCase = ({ onCaseCreated }: { onCaseCreated: () => void }) => {
   const [company_name, setCompanyName] = useState("");
   const [desc, setDesc] = useState("");
   const [city, setCity] = useState("");
-  const [country, setCountry] = useState<"normal" | "beforeAfter">("normal");
+  const [country, setCountry] = useState("");
   const [image, setImage] = useState<File | null>(null);
+  const [contact_person, setContactPerson] = useState("");
 
   const [errors, setErrors] = useState({
     company_name: "",
@@ -14,6 +15,7 @@ const CreateCase = ({ onCaseCreated }: { onCaseCreated: () => void }) => {
     city: "",
     country: "",
     image: "",
+    contact_person: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -21,32 +23,34 @@ const CreateCase = ({ onCaseCreated }: { onCaseCreated: () => void }) => {
     e.preventDefault();
     setLoading(true);
 
-    if (!company_name || !desc || !city) {
+    if (!company_name || !desc || !city || !contact_person) {
       setErrors({
         company_name: !company_name ? "Titel er påkrævet" : "",
         desc: !desc ? "Beskrivelse er påkrævet" : "",
         city: !city ? "By er påkrævet" : "",
         country: !country ? "Land er påkrævet" : "",
         image: "",
+        contact_person: !contact_person ? "Kontaktperson er påkrævet" : "",
       });
       setLoading(false);
       return;
     }
 
     try {
-      // Adjust the arguments passed to createCase based on its definition
       await createCase({
         company_name,
         desc,
         city,
         country,
-        image: image || undefined,
+        contact_person,
+        image,
       });
 
       setCompanyName("");
       setDesc("");
       setCity("");
-      setCountry("normal");
+      setCountry("");
+      setContactPerson("");
       setImage(null);
       onCaseCreated();
     } catch (error) {
@@ -120,6 +124,25 @@ const CreateCase = ({ onCaseCreated }: { onCaseCreated: () => void }) => {
                 </span>
               )}
             </div>
+            <div className="flex flex-col gap-2 relative w-full">
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Contact Person</legend>
+                <input
+                  name="contact_person"
+                  type="text"
+                  className="input input-bordered input-md"
+                  placeholder="Write the contact person's name..."
+                  value={contact_person}
+                  onChange={(e) => setContactPerson(e.target.value)}
+                  required
+                />
+              </fieldset>
+              {errors.contact_person && (
+                <span className="absolute -bottom-4 text-xs text-red-500">
+                  {errors.contact_person}
+                </span>
+              )}
+            </div>
           </div>
           <div className="flex flex-col gap-3 relative">
             <div className="flex flex-col gap-2 relative w-full">
@@ -144,25 +167,23 @@ const CreateCase = ({ onCaseCreated }: { onCaseCreated: () => void }) => {
             <div className="flex flex-col gap-2 relative w-full">
               <fieldset className="fieldset">
                 <legend className="fieldset-legend">Country</legend>
-                <select
-                  name="country"
-                  className="select select-bordered select-md"
-                  value={country}
-                  onChange={(e) =>
-                    setCountry(e.target.value as "normal" | "beforeAfter")
-                  }
+                <input
+                  name="city"
+                  type="text"
+                  className="input input-bordered input-md"
+                  placeholder="Write the country..."
+                  value={city}
+                  onChange={(e) => setCountry(e.target.value)}
                   required
-                >
-                  <option value="normal">Normal</option>
-                  <option value="beforeAfter">Before/After</option>
-                </select>
+                />
               </fieldset>
-              {errors.country && (
+              {errors.city && (
                 <span className="absolute -bottom-4 text-xs text-red-500">
-                  {errors.country}
+                  {errors.city}
                 </span>
               )}
             </div>
+
             <div className="flex flex-col gap-2 relative w-full">
               <fieldset className="fieldset">
                 <legend className="fieldset-legend">Choose images</legend>
