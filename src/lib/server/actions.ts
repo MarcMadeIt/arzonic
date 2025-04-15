@@ -259,12 +259,14 @@ export async function createCase({
   city,
   country,
   image,
+  contact_person,
 }: {
   company_name: string;
   desc: string;
   city: string;
   country: string;
   image?: File;
+  contact_person: string;
 }): Promise<void> {
   const supabase = await createServerClientInstance();
 
@@ -331,6 +333,7 @@ export async function createCase({
         desc,
         city,
         country,
+        contact_person,
         image: imageUrl,
         creator_id: userData.user.id,
       },

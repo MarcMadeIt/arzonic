@@ -76,23 +76,23 @@ const ThreeAnimation: React.FC = () => {
     const onScroll = () => {
       const scrollY = window.scrollY;
       const currentProgress = Math.min(1, Math.max(0, scrollY / maxScroll));
-      
+
       // Apply ease-out quadratic easing
       // easeOutQuad(t) = 1 - (1 - t)^2
       const easedProgress = 1 - Math.pow(1 - currentProgress, 2);
-      
+
       // Calculate one frame's time at 24fps.
       const oneFrameTime = 1 / 24; // ≈0.04167 seconds
-      
+
       // Adjust the duration so that the top state is one frame earlier.
       const adjustedDuration = clipDuration - oneFrameTime;
       const newTime = (1 - easedProgress) * adjustedDuration;
-      
+
       if (mixer && adjustedDuration > 0) {
         mixer.setTime(newTime);
       }
     };
-    
+
 
     window.addEventListener("scroll", onScroll);
 
@@ -200,4 +200,3 @@ const ThreeAnimation: React.FC = () => {
 };
 
 export default ThreeAnimation;
-
