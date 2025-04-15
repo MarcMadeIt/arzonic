@@ -7,8 +7,7 @@ import { usePathname } from "next/navigation";
 import { FaComment, FaGear, FaHouse, FaList } from "react-icons/fa6";
 import { readUserSession } from "@/lib/auth/readUserSession";
 import Image from "next/image";
-import { MdContentCopy, MdDashboard, MdMail, MdSettings } from "react-icons/md";
-import Theme from "@/components/client/layout/Theme";
+
 
 const Navbar = () => {
   const pathname = usePathname();
