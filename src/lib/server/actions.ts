@@ -359,18 +359,13 @@ export async function updateCase(
   title: string,
   desc: string,
   city: string,
-  formType: "normal" | "beforeAfter",
   image?: File,
-  imageBefore?: File,
-  imageAfter?: File,
   created_at?: string
 ): Promise<void> {
   const supabase = await createServerClientInstance();
 
   try {
     let imageUrl: string | null = null;
-    let imageBeforeUrl: string | null = null;
-    let imageAfterUrl: string | null = null;
 
     const uploadFile = async (file: File, folder: string): Promise<string> => {
       const fileExt = "webp";
@@ -417,40 +412,15 @@ export async function updateCase(
       return data.publicUrl;
     };
 
-    if (formType === "normal") {
-      if (image) {
-        imageUrl = await uploadFile(image, "normal");
-      } else {
-        const { data: existingCase } = await supabase
-          .from("cases")
-          .select("image")
-          .eq("id", id)
-          .single();
-        imageUrl = existingCase?.image || null;
-      }
-    }
-
-    if (formType === "beforeAfter") {
-      if (imageBefore) {
-        imageBeforeUrl = await uploadFile(imageBefore, "beforeAfter");
-      } else {
-        const { data: existingCase } = await supabase
-          .from("cases")
-          .select("imageBefore")
-          .eq("id", id)
-          .single();
-        imageBeforeUrl = existingCase?.imageBefore || null;
-      }
-      if (imageAfter) {
-        imageAfterUrl = await uploadFile(imageAfter, "beforeAfter");
-      } else {
-        const { data: existingCase } = await supabase
-          .from("cases")
-          .select("imageAfter")
-          .eq("id", id)
-          .single();
-        imageAfterUrl = existingCase?.imageAfter || null;
-      }
+    if (image) {
+      imageUrl = await uploadFile(image, "normal");
+    } else {
+      const { data: existingCase } = await supabase
+        .from("cases")
+        .select("image")
+        .eq("id", id)
+        .single();
+      imageUrl = existingCase?.image || null;
     }
 
     const { data: userData } = await supabase.auth.getUser();
@@ -462,20 +432,14 @@ export async function updateCase(
       title: string;
       desc: string;
       city: string;
-      formType: "normal" | "beforeAfter";
       image: string | null;
-      imageBefore: string | null;
-      imageAfter: string | null;
       creator_id: string;
       created_at?: string;
     } = {
       title,
       desc,
       city,
-      formType,
       image: imageUrl,
-      imageBefore: imageBeforeUrl,
-      imageAfter: imageAfterUrl,
       creator_id: userData.user.id,
     };
 

@@ -43,9 +43,9 @@ const UpdateReview = ({ reviewId, onReviewUpdated }: UpdateReviewProps) => {
 
     if (!name || !desc || !city) {
       setErrors({
-        name: !name ? "Navn er påkrævet" : "",
-        city: !city ? "By er påkrævet" : "",
-        desc: !desc ? "Beskrivelse er påkrævet" : "",
+        name: !name ? "Name is required" : "",
+        city: !city ? "City is required" : "",
+        desc: !desc ? "Description is required" : "",
       });
       setLoading(false);
       return;
@@ -70,30 +70,28 @@ const UpdateReview = ({ reviewId, onReviewUpdated }: UpdateReviewProps) => {
 
   return (
     <div className="flex flex-col gap-3 w-full p-3">
-      <span className="text-lg font-bold">Opdater anmeldelse</span>
+      <span className="text-lg font-bold">Update Review</span>
       <form
         onSubmit={handleUpdateReview}
         className="flex flex-col items-start gap-5 w-full"
       >
         {error && <div className="alert alert-error">{error}</div>}
         <div className="form-control">
-          <label className="label">Vurdering</label>
+          <label className="label">Rating</label>
           <CreateRating rate={rate} setRate={(value) => setRate(value)} />
         </div>
         <div className="flex flex-col gap-2 relative w-full">
-          <label className="form-control">
-            <div className="label">
-              <span className="label-text">Navn</span>
-            </div>
+          <fieldset className="fieldset">
+            <legend className="fieldset-legend">Name</legend>
             <input
               type="text"
               className="input input-bordered input-md"
-              placeholder="Anmelderens navn"
+              placeholder="Reviewer name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
             />
-          </label>
+          </fieldset>
           {errors.name && (
             <span className="absolute -bottom-4 text-xs text-red-500">
               {errors.name}
@@ -101,19 +99,17 @@ const UpdateReview = ({ reviewId, onReviewUpdated }: UpdateReviewProps) => {
           )}
         </div>
         <div className="flex flex-col gap-2 relative w-full">
-          <label className="form-control">
-            <div className="label">
-              <span className="label-text">By</span>
-            </div>
+          <fieldset className="fieldset">
+            <legend className="fieldset-legend">City</legend>
             <input
               type="text"
               className="input input-bordered input-md"
-              placeholder="Anmelderens by"
+              placeholder="Reviewer city"
               value={city}
               onChange={(e) => setCity(e.target.value)}
               required
             />
-          </label>
+          </fieldset>
           {errors.city && (
             <span className="absolute -bottom-4 text-xs text-red-500">
               {errors.city}
@@ -121,17 +117,15 @@ const UpdateReview = ({ reviewId, onReviewUpdated }: UpdateReviewProps) => {
           )}
         </div>
         <div className="flex flex-col gap-2 relative w-full">
-          <label className="form-control">
-            <div className="label">
-              <span className="label-text">Beskrivelse</span>
-            </div>
+          <fieldset className="fieldset">
+            <legend className="fieldset-legend">Description</legend>
             <textarea
               name="desc"
               className="textarea textarea-bordered textarea-md text"
               value={desc}
               onChange={handleDescChange}
               required
-              placeholder="Skriv en mindre anmeldelse..."
+              placeholder="Write a short review..."
               style={{ resize: "none" }}
               cols={30}
               rows={8}
@@ -139,7 +133,7 @@ const UpdateReview = ({ reviewId, onReviewUpdated }: UpdateReviewProps) => {
             <div className="text-right text-xs font-medium text-gray-500">
               {desc.length} / 100
             </div>
-          </label>
+          </fieldset>
           {errors.desc && (
             <span className="absolute -bottom-4 text-xs text-red-500">
               {errors.desc}
@@ -148,7 +142,7 @@ const UpdateReview = ({ reviewId, onReviewUpdated }: UpdateReviewProps) => {
         </div>
 
         <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? "Opdaterer..." : "Opdater anmeldelse"}
+          {loading ? "Updating..." : "Update Review"}
         </button>
       </form>
     </div>

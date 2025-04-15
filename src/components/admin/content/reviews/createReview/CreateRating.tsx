@@ -11,35 +11,35 @@ const CreateRating = ({ rate, setRate }: CreateRatingProps) => {
       <input
         type="radio"
         name="rating-4"
-        className="mask mask-star-2 bg-green-500"
+        className="mask mask-star-2 bg-secondary"
         checked={rate === 1}
         onChange={() => setRate(1)}
       />
       <input
         type="radio"
         name="rating-4"
-        className="mask mask-star-2 bg-green-500"
+        className="mask mask-star-2 bg-secondary"
         checked={rate === 2}
         onChange={() => setRate(2)}
       />
       <input
         type="radio"
         name="rating-4"
-        className="mask mask-star-2 bg-green-500"
+        className="mask mask-star-2 bg-secondary"
         checked={rate === 3}
         onChange={() => setRate(3)}
       />
       <input
         type="radio"
         name="rating-4"
-        className="mask mask-star-2 bg-green-500"
+        className="mask mask-star-2 bg-secondary"
         checked={rate === 4}
         onChange={() => setRate(4)}
       />
       <input
         type="radio"
         name="rating-4"
-        className="mask mask-star-2 bg-green-500"
+        className="mask mask-star-2 bg-secondary"
         checked={rate === 5}
         onChange={() => setRate(5)}
       />
