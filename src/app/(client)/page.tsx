@@ -5,11 +5,11 @@ import React from "react";
 const Home = () => {
   return (
     <>
-      <section className="h-[700px]">
+      <section className="h-[800px]">
         <Hero />
       </section>
 
-      <section className="h-[700px]">
+      <section className="h-[800px]">
         <Prices />
       </section>
     </>

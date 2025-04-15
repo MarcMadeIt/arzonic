@@ -20,8 +20,8 @@ const ThreeAnimation: React.FC = () => {
       1000
     );
     // Camera Position
-    camera.position.set(0, 1.5, 3.5);
-    camera.lookAt(0, 0, 0);
+    camera.position.set(0, 2.1, 3.5);
+    camera.lookAt(0.618, 0, 0);
 
     //Renderer Setup
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -70,15 +70,30 @@ const ThreeAnimation: React.FC = () => {
     // Animation control.
     let mixer: THREE.AnimationMixer | null = null;
     let clipDuration = 0;
-    const maxScroll = 1000;
+    const maxScroll = 600;
 
     // Scroll Event Handling
     const onScroll = () => {
-      const currentProgress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-      if (mixer && clipDuration > 0) {
-        mixer.setTime((1 - currentProgress) * clipDuration);
+      const scrollY = window.scrollY;
+      const currentProgress = Math.min(1, Math.max(0, scrollY / maxScroll));
+      
+      // Apply ease-out quadratic easing
+      // easeOutQuad(t) = 1 - (1 - t)^2
+      const easedProgress = 1 - Math.pow(1 - currentProgress, 2);
+      
+      // Calculate one frame's time at 24fps.
+      const oneFrameTime = 1 / 24; // ≈0.04167 seconds
+      
+      // Adjust the duration so that the top state is one frame earlier.
+      const adjustedDuration = clipDuration - oneFrameTime;
+      const newTime = (1 - easedProgress) * adjustedDuration;
+      
+      if (mixer && adjustedDuration > 0) {
+        mixer.setTime(newTime);
       }
     };
+    
+
     window.addEventListener("scroll", onScroll);
 
     // Load the GLB Model
@@ -141,9 +156,12 @@ const ThreeAnimation: React.FC = () => {
           action.reset();
           action.play();
           clipDuration = gltf.animations[0].duration;
+          // Calculate the time corresponding to one frame (assuming 24 fps).
+          const fps = 24;
+          const oneFrameTime = 1 / fps;
 
-          // Set the initial animation to closed state.
-          mixer.setTime(clipDuration);
+          // Set the animation to start at frame 109 instead of frame 110.
+          mixer.setTime(clipDuration - oneFrameTime);
           onScroll();
         }
       },
