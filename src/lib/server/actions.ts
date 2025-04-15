@@ -273,7 +273,7 @@ export async function createCase({
   try {
     let imageUrl: string | null = null;
 
-    const uploadFile = async (file: File, folder: string) => {
+    const uploadFile = async (file: File) => {
       const fileExt = "webp";
       const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
 
@@ -283,7 +283,7 @@ export async function createCase({
         throw new Error("User not authenticated for photo upload");
       }
 
-      const filePath = `${folder}/${userData.user.id}/${fileName}`;
+      const filePath = `case-images/${userData.user.id}/${fileName}`;
       const fileBuffer = await file.arrayBuffer();
 
       const optimizedImage = await sharp(Buffer.from(fileBuffer))
@@ -319,13 +319,19 @@ export async function createCase({
     };
 
     if (image) {
-      imageUrl = await uploadFile(image, "cases");
+      imageUrl = await uploadFile(image);
     }
 
-    const { data: userData } = await supabase.auth.getUser();
-    if (!userData?.user) {
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError || !userData?.user) {
+      console.error(
+        "Failed to retrieve authenticated user:",
+        userError?.message
+      );
       throw new Error("User not authenticated");
     }
+
+    console.log("Authenticated user ID:", userData.user.id); // Log user ID for debugging
 
     const { error } = await supabase.from("cases").insert([
       {
@@ -335,7 +341,7 @@ export async function createCase({
         country,
         contact_person,
         image: imageUrl,
-        creator_id: userData.user.id,
+        creator_id: userData.user.id, // Ensure user ID is passed here
       },
     ]);
 
@@ -361,7 +367,7 @@ export async function updateCase(
   try {
     let imageUrl: string | null = null;
 
-    const uploadFile = async (file: File, folder: string): Promise<string> => {
+    const uploadFile = async (file: File): Promise<string> => {
       const fileExt = "webp";
       const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
 
@@ -371,7 +377,7 @@ export async function updateCase(
         throw new Error("User not authenticated for photo upload");
       }
 
-      const filePath = `${folder}/${userData.user.id}/${fileName}`;
+      const filePath = `case-images/${userData.user.id}/${fileName}`;
       const fileBuffer = await file.arrayBuffer();
 
       const optimizedImage = await sharp(Buffer.from(fileBuffer))
@@ -407,7 +413,7 @@ export async function updateCase(
     };
 
     if (image) {
-      imageUrl = await uploadFile(image, "normal");
+      imageUrl = await uploadFile(image);
     } else {
       const { data: existingCase } = await supabase
         .from("cases")
