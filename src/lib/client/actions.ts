@@ -32,11 +32,9 @@ export async function getLatestNews() {
     .select("*")
     .order("created_at", { ascending: false })
     .limit(5);
-
   if (error) {
     throw new Error("Failed to fetch latest news: " + error.message);
   }
-
   return data;
 }
 

@@ -101,7 +101,7 @@ const CasesList = ({ view, page, setTotal, onEditCase }: CasesListProps) => {
           <p className="text-lg text-gray-500">{t("no_cases")}</p>
         </div>
       ) : editingCaseId ? (
-        <UpdateCase caseId={editingCaseId} onNewsUpdated={handleCaseUpdated} />
+        <UpdateCase caseId={editingCaseId} onCaseUpdated={handleCaseUpdated} />
       ) : (
         <>
           {view === "cards" ? (
@@ -109,7 +109,7 @@ const CasesList = ({ view, page, setTotal, onEditCase }: CasesListProps) => {
               {caseItems.map((item) => (
                 <div
                   key={item.id}
-                  className="card card-compact shadow- ring-2 ring-base-100 rounded-md"
+                  className="card card-compact shadow-xl rounded-md"
                 >
                   <figure className="relative w-full aspect-[4/3] h-56 md:h-40 xl:h-56 overflow-hidden">
                     <div className="relative w-full h-full">

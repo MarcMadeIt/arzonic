@@ -59,7 +59,7 @@ const Cases = () => {
           </button>
           <UpdateCase
             caseId={selectedCaseId}
-            onNewsUpdated={handleCaseUpdated}
+            onCaseUpdated={handleCaseUpdated}
           />
         </div>
       ) : (

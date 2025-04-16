@@ -258,15 +258,15 @@ export async function createCase({
   desc,
   city,
   country,
-  image,
   contact_person,
+  image,
 }: {
   company_name: string;
   desc: string;
   city: string;
   country: string;
-  image?: File;
   contact_person: string;
+  image?: File;
 }): Promise<void> {
   const supabase = await createServerClientInstance();
 
@@ -331,8 +331,6 @@ export async function createCase({
       throw new Error("User not authenticated");
     }
 
-    console.log("Authenticated user ID:", userData.user.id); // Log user ID for debugging
-
     const { error } = await supabase.from("cases").insert([
       {
         company_name,
@@ -356,10 +354,12 @@ export async function createCase({
 
 export async function updateCase(
   id: number,
-  title: string,
+  company_name: string,
   desc: string,
   city: string,
-  image?: File,
+  country: string,
+  contact_person: string,
+  image: File,
   created_at?: string
 ): Promise<void> {
   const supabase = await createServerClientInstance();
@@ -429,18 +429,22 @@ export async function updateCase(
     }
 
     const updateData: {
-      title: string;
+      company_name: string;
       desc: string;
       city: string;
+      country: string;
       image: string | null;
       creator_id: string;
       created_at?: string;
+      contact_person: string;
     } = {
-      title,
+      company_name,
       desc,
       city,
+      country,
       image: imageUrl,
       creator_id: userData.user.id,
+      contact_person,
     };
 
     if (created_at) {
