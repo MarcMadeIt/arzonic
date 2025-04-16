@@ -1,4 +1,3 @@
-// components/ThreeAnimation.tsx
 import { useEffect, useRef, Suspense, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
@@ -32,7 +31,7 @@ function LaptopModel({ scrollY }: { scrollY: number }) {
     const action = mixer.current.clipAction(animations[0]);
     action.reset().play();
 
-    // Start animation fra frame 109
+    // Start animation from frame 109
     const fps = 24;
     const oneFrameTime = 1 / fps;
     mixer.current.setTime(clipDuration - oneFrameTime);
@@ -66,12 +65,36 @@ export default function ThreeAnimation() {
   return (
     <div className="w-full h-full">
       <Canvas
-        camera={{ position: [0, 2.1, 3.5], fov: 75 }}
-        gl={{ alpha: true }}
+        shadows
+        camera={{ position: [0.4, 2.7, 4.7], fov: 70 }}
+        dpr={Math.min(window.devicePixelRatio, 2)}
+        gl={{
+          antialias: true,
+          alpha: true,
+        }}
+        onCreated={({ gl }) => {
+          gl.shadowMap.enabled = true;
+          gl.shadowMap.type = THREE.PCFSoftShadowMap;
+        }}
       >
-        {/* Lighting */}
         <ambientLight intensity={1} />
-        <directionalLight intensity={1} position={[5, 15, 7.5]} />
+
+        <directionalLight
+          intensity={5}
+          position={[5, 15, 7.5]}
+          castShadow
+          shadow-mapSize-width={1024}
+          shadow-mapSize-height={1024}
+          shadow-bias={-0.0005}
+          shadow-normalBias={0.05}
+          shadow-camera-near={0.5}
+          shadow-camera-far={50}
+          shadow-camera-left={-10}
+          shadow-camera-right={10}
+          shadow-camera-top={10}
+          shadow-camera-bottom={-10}
+        />
+
         {[0, 2, 4].map((i) => {
           const angle = (i * Math.PI * 2) / 3;
           return (
@@ -84,6 +107,12 @@ export default function ThreeAnimation() {
               decay={2}
               distance={10}
               target-position={[0, 0, 0]}
+              castShadow
+              shadow-mapSize-width={512}
+              shadow-mapSize-height={512}
+              shadow-bias={-0.001}
+              shadow-camera-near={1}
+              shadow-camera-far={20}
             />
           );
         })}
