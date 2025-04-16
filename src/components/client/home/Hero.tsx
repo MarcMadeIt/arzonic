@@ -1,10 +1,9 @@
-// components/Hero.tsx
 "use client";
 import Image from "next/image";
 import React from "react";
 import dynamic from "next/dynamic";
 
-const ThreeAnimation = dynamic(() => import("../../threeAnimation"), {
+const ThreeAnimation = dynamic(() => import("../../animation/threeAnimation"), {
   ssr: false,
 });
 
