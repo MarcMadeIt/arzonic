@@ -109,7 +109,7 @@ const CasesList = ({ view, page, setTotal, onEditCase }: CasesListProps) => {
               {caseItems.map((item) => (
                 <div
                   key={item.id}
-                  className="card card-compact shadow-xl rounded-md"
+                  className="card card-compact shadow-lg rounded-md"
                 >
                   <figure className="relative w-full aspect-[4/3] h-56 md:h-40 xl:h-56 overflow-hidden">
                     <div className="relative w-full h-full">
@@ -208,6 +208,7 @@ const CasesList = ({ view, page, setTotal, onEditCase }: CasesListProps) => {
           <div className="modal-box">
             <h3 className="font-bold text-lg">{t("delete_confirmation")}</h3>
             <p className="py-4">{t("delete_case_prompt")}</p>
+            <p className="text-sm text-warning">{t("delete_case_warning")}</p>
             <div className="modal-action">
               <button className="btn" onClick={closeModal}>
                 {t("cancel")}

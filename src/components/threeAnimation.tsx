@@ -1,202 +1,97 @@
-import React, { useEffect, useRef } from "react";
+// components/ThreeAnimation.tsx
+import { useEffect, useRef, Suspense, useState } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
-const ThreeAnimation: React.FC = () => {
-  const mountRef = useRef<HTMLDivElement>(null);
+function LaptopModel({ scrollY }: { scrollY: number }) {
+  const group = useRef<THREE.Group>(null);
+  const { scene, animations } = useGLTF("/models/laptop.glb");
+  const mixer = useRef<THREE.AnimationMixer | null>(null);
+  const clipDuration = animations[0]?.duration || 0;
+  const maxScroll = 600;
 
   useEffect(() => {
-    if (!mountRef.current) return;
-    mountRef.current.innerHTML = "";
+    if (!group.current) return;
 
-    // Scene / Camera Setup
-    const scene = new THREE.Scene();
-    scene.background = null;
-    const { clientWidth, clientHeight } = mountRef.current;
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      clientWidth / clientHeight,
-      0.1,
-      1000
-    );
-    // Camera Position
-    camera.position.set(0, 2.1, 3.5);
-    camera.lookAt(0.618, 0, 0);
+    const model = scene;
+    const box = new THREE.Box3().setFromObject(model);
+    const size = box.getSize(new THREE.Vector3()).length();
+    const center = box.getCenter(new THREE.Vector3());
+    model.position.sub(center);
 
-    //Renderer Setup
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    renderer.setSize(clientWidth, clientHeight);
-    renderer.setClearColor(0x000000, 0);
-    mountRef.current.appendChild(renderer.domElement);
+    const minY = new THREE.Box3().setFromObject(model).min.y;
+    model.position.y -= minY;
 
-    // Lighting Setup
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
-    scene.add(ambientLight);
+    const scaleFactor = 6 / size;
+    model.scale.setScalar(scaleFactor);
 
-    // directional light
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.8);
-    directionalLight.position.set(5, 10, 7.5);
-    scene.add(directionalLight);
+    group.current.add(model);
 
-    // three spotlights arranged 120° apart.
-    const spotlightRadius = 4;
-    const spotlightHeight = 3;
-    const spotlightAngles = [0, (2 * Math.PI) / 3, (4 * Math.PI) / 3];
-    spotlightAngles.forEach((angle) => {
-      const x = spotlightRadius * Math.cos(angle);
-      const z = spotlightRadius * Math.sin(angle);
-      const spotlight = new THREE.SpotLight(0xffffff, 5);
-      spotlight.position.set(x, spotlightHeight, z);
+    mixer.current = new THREE.AnimationMixer(model);
+    const action = mixer.current.clipAction(animations[0]);
+    action.reset().play();
 
-      // spotlight parameters.
-      spotlight.angle = Math.PI / 6; // Spotlight cone (30°)
-      spotlight.penumbra = 0.2;
-      spotlight.decay = 2;
-      spotlight.distance = 10;
+    // Start animation fra frame 109
+    const fps = 24;
+    const oneFrameTime = 1 / fps;
+    mixer.current.setTime(clipDuration - oneFrameTime);
+  }, [scene]);
 
-      // Target
-      spotlight.target.position.set(0, 0, 0);
-      scene.add(spotlight);
-      scene.add(spotlight.target);
-    });
+  useFrame((_, delta) => {
+    if (!mixer.current || !animations.length) return;
 
-    // Create a pivot group for centering the model.
-    const pivot = new THREE.Group();
-    pivot.rotation.y = -Math.PI / 4;
-    scene.add(pivot);
+    const currentProgress = Math.min(1, Math.max(0, scrollY / maxScroll));
+    const easedProgress = 1 - Math.pow(1 - currentProgress, 2);
+    const oneFrameTime = 1 / 24;
+    const adjustedDuration = clipDuration - oneFrameTime;
+    const newTime = (1 - easedProgress) * adjustedDuration;
 
-    // Animation control.
-    let mixer: THREE.AnimationMixer | null = null;
-    let clipDuration = 0;
-    const maxScroll = 600;
+    mixer.current.setTime(newTime);
+    mixer.current.update(delta);
+  });
 
-    // Scroll Event Handling
-    const onScroll = () => {
-      const scrollY = window.scrollY;
-      const currentProgress = Math.min(1, Math.max(0, scrollY / maxScroll));
+  return <group ref={group} rotation={[0, -Math.PI / 6, 0]} />;
+}
 
-      // Apply ease-out quadratic easing
-      // easeOutQuad(t) = 1 - (1 - t)^2
-      const easedProgress = 1 - Math.pow(1 - currentProgress, 2);
+export default function ThreeAnimation() {
+  const [scrollY, setScrollY] = useState(0);
 
-      // Calculate one frame's time at 24fps.
-      const oneFrameTime = 1 / 24; // ≈0.04167 seconds
-
-      // Adjust the duration so that the top state is one frame earlier.
-      const adjustedDuration = clipDuration - oneFrameTime;
-      const newTime = (1 - easedProgress) * adjustedDuration;
-
-      if (mixer && adjustedDuration > 0) {
-        mixer.setTime(newTime);
-      }
-    };
-
-
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", onScroll);
-
-    // Load the GLB Model
-    const loader = new GLTFLoader();
-    loader.load(
-      "/models/laptop.glb",
-      (gltf) => {
-        const model = gltf.scene;
-        const box = new THREE.Box3().setFromObject(model);
-        const size = box.getSize(new THREE.Vector3()).length();
-        const center = box.getCenter(new THREE.Vector3());
-        model.position.sub(center);
-        model.updateMatrixWorld(true);
-        const newBox = new THREE.Box3().setFromObject(model);
-        const minY = newBox.min.y;
-        model.position.y -= minY;
-
-        // Model scale
-        const desiredSize = 5;
-        if (size > 0) {
-          const scaleFactor = desiredSize / size;
-          model.scale.set(scaleFactor, scaleFactor, scaleFactor);
-        }
-
-        model.traverse((child) => {
-          if ((child as THREE.Mesh).isMesh) {
-            const mesh = child as THREE.Mesh;
-            if (Array.isArray(mesh.material)) {
-              mesh.material.forEach((mat) => {
-                mat.side = THREE.DoubleSide;
-                mat.needsUpdate = true;
-                if (mat.map) {
-                  mat.map.anisotropy = renderer.capabilities.getMaxAnisotropy();
-                  mat.map.minFilter = THREE.LinearMipMapLinearFilter;
-                  mat.map.magFilter = THREE.LinearFilter;
-                  mat.map.encoding = THREE.sRGBEncoding;
-                  mat.map.needsUpdate = true;
-                }
-              });
-            } else if (mesh.material) {
-              mesh.material.side = THREE.DoubleSide;
-              mesh.material.needsUpdate = true;
-              if (mesh.material.map) {
-                mesh.material.map.anisotropy = renderer.capabilities.getMaxAnisotropy();
-                mesh.material.map.minFilter = THREE.LinearMipMapLinearFilter;
-                mesh.material.map.magFilter = THREE.LinearFilter;
-                mesh.material.map.encoding = THREE.sRGBEncoding;
-                mesh.material.map.needsUpdate = true;
-              }
-            }
-          }
-        });
-
-        pivot.add(model);
-
-        // Setup animations
-        if (gltf.animations && gltf.animations.length > 0) {
-          mixer = new THREE.AnimationMixer(model);
-          const action = mixer.clipAction(gltf.animations[0]);
-          action.reset();
-          action.play();
-          clipDuration = gltf.animations[0].duration;
-          // Calculate the time corresponding to one frame (assuming 24 fps).
-          const fps = 24;
-          const oneFrameTime = 1 / fps;
-
-          // Set the animation to start at frame 109 instead of frame 110.
-          mixer.setTime(clipDuration - oneFrameTime);
-          onScroll();
-        }
-      },
-      undefined,
-      (error) => {
-        console.error("Error loading GLB model:", error);
-      }
-    );
-
-    // Animation Loop
-    const animate = () => {
-      requestAnimationFrame(animate);
-      renderer.render(scene, camera);
-    };
-    animate();
-
-    // Responsive Handling
-    const handleResize = () => {
-      if (!mountRef.current) return;
-      const { clientWidth, clientHeight } = mountRef.current;
-      camera.aspect = clientWidth / clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(clientWidth, clientHeight);
-    };
-    window.addEventListener("resize", handleResize);
-
-    // Cleanup
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("scroll", onScroll);
-      mountRef.current?.removeChild(renderer.domElement);
-    };
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  return <div ref={mountRef} className="w-full h-full" />;
-};
+  return (
+    <div className="w-full h-full">
+      <Canvas
+        camera={{ position: [0, 2.1, 3.5], fov: 75 }}
+        gl={{ alpha: true }}
+      >
+        {/* Lighting */}
+        <ambientLight intensity={1} />
+        <directionalLight intensity={1} position={[5, 15, 7.5]} />
+        {[0, 2, 4].map((i) => {
+          const angle = (i * Math.PI * 2) / 3;
+          return (
+            <spotLight
+              key={i}
+              position={[4 * Math.cos(angle), 3, 4 * Math.sin(angle)]}
+              intensity={5}
+              angle={Math.PI / 6}
+              penumbra={0.2}
+              decay={2}
+              distance={10}
+              target-position={[0, 0, 0]}
+            />
+          );
+        })}
 
-export default ThreeAnimation;
+        <Suspense fallback={null}>
+          <LaptopModel scrollY={scrollY} />
+        </Suspense>
+      </Canvas>
+    </div>
+  );
+}

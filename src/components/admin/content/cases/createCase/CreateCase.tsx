@@ -25,7 +25,7 @@ const CreateCase = ({ onCaseCreated }: { onCaseCreated: () => void }) => {
     e.preventDefault();
     setLoading(true);
 
-    if (!company_name || !desc || !city || !contact_person) {
+    if (!company_name || !desc || !city || !country || !contact_person) {
       setErrors({
         company_name: !company_name ? t("company_name_required") : "",
         desc: !desc ? t("desc_required") : "",
