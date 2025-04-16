@@ -4,16 +4,17 @@ import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
 function LaptopModel({ scrollY }: { scrollY: number }) {
-  const group = useRef<THREE.Group>(null);
   const { scene, animations } = useGLTF("/models/laptop.glb");
+  const modelRef = useRef<THREE.Group>(null);
   const mixer = useRef<THREE.AnimationMixer | null>(null);
   const clipDuration = animations[0]?.duration || 0;
   const maxScroll = 600;
 
   useEffect(() => {
-    if (!group.current) return;
+    if (!modelRef.current) return;
 
-    const model = scene;
+    const model = modelRef.current;
+
     const box = new THREE.Box3().setFromObject(model);
     const size = box.getSize(new THREE.Vector3()).length();
     const center = box.getCenter(new THREE.Vector3());
@@ -22,18 +23,14 @@ function LaptopModel({ scrollY }: { scrollY: number }) {
     const minY = new THREE.Box3().setFromObject(model).min.y;
     model.position.y -= minY;
 
-    const scaleFactor = 6 / size;
+    const scaleFactor = 3 / size;
     model.scale.setScalar(scaleFactor);
-
-    group.current.add(model);
 
     mixer.current = new THREE.AnimationMixer(model);
     const action = mixer.current.clipAction(animations[0]);
     action.reset().play();
 
-    // Start animation from frame 109
-    const fps = 24;
-    const oneFrameTime = 1 / fps;
+    const oneFrameTime = 1 / 24;
     mixer.current.setTime(clipDuration - oneFrameTime);
   }, [scene]);
 
@@ -50,7 +47,9 @@ function LaptopModel({ scrollY }: { scrollY: number }) {
     mixer.current.update(delta);
   });
 
-  return <group ref={group} rotation={[0, -Math.PI / 6, 0]} />;
+  return (
+    <primitive object={scene} ref={modelRef} rotation={[0, -Math.PI / 6, 0]} />
+  );
 }
 
 export default function ThreeAnimation() {
@@ -66,7 +65,7 @@ export default function ThreeAnimation() {
     <div className="w-full h-full">
       <Canvas
         shadows
-        camera={{ position: [0.4, 2.7, 4.7], fov: 70 }}
+        camera={{ position: [0.4, 2, 4.7], fov: 70 }}
         dpr={Math.min(window.devicePixelRatio, 2)}
         gl={{
           antialias: true,
@@ -80,8 +79,8 @@ export default function ThreeAnimation() {
         <ambientLight intensity={1} />
 
         <directionalLight
-          intensity={5}
-          position={[5, 15, 7.5]}
+          intensity={3}
+          position={[3, 50, 8]}
           castShadow
           shadow-mapSize-width={1024}
           shadow-mapSize-height={1024}
@@ -101,7 +100,7 @@ export default function ThreeAnimation() {
             <spotLight
               key={i}
               position={[4 * Math.cos(angle), 3, 4 * Math.sin(angle)]}
-              intensity={5}
+              intensity={7}
               angle={Math.PI / 6}
               penumbra={0.2}
               decay={2}
