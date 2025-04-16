@@ -9,7 +9,6 @@ const Home = () => {
       <section className="h-[800px]">
         <Hero />
       </section>
-
       <section className="h-[800px]">
         <Prices />
       </section>

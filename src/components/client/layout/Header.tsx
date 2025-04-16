@@ -43,7 +43,7 @@ const Header = () => {
   }, [pathname]);
 
   return (
-    <div className="navbar fixed top-0 bg-base-100 inset-x-0 z-50 max-w-[1536px] mx-auto p-2 md:p-4 flex justify-between items-center 2xl:rounded-b-lg">
+    <div className="navbar bg-base-100 inset-x-0 z-50 max-w-[1536px] mx-auto p-2 md:p-4 flex justify-between items-center 2xl:rounded-b-lg">
       <div className="flex-1">
         <Link className="cursor-pointer pl-4 flex items-center gap-2" href="/">
           <Image src="/logo-arzonic.png" alt="" width={60} height={60} />

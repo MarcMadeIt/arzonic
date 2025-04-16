@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { updateCase, getCaseById } from "@/lib/server/actions";
 import Image from "next/image";
+import { t } from "i18next";
 
 const UpdateCase = ({
   caseId,
-  onNewsUpdated,
+  onCaseUpdated,
 }: {
   caseId: number;
-  onNewsUpdated: () => void;
+  onCaseUpdated: () => void;
 }) => {
-  const [title, setTitle] = useState("");
+  const [companyName, setCompanyName] = useState("");
   const [desc, setDesc] = useState("");
   const [city, setCity] = useState("");
   const [image, setImage] = useState<File | null>(null);
@@ -17,53 +18,52 @@ const UpdateCase = ({
   const [existingImage, setExistingImage] = useState<string | null>(null);
 
   const [errors, setErrors] = useState({
-    title: "",
+    companyName: "",
     desc: "",
     city: "",
     image: "",
-    created_at: "", // Add created_at to errors object
+    created_at: "",
   });
   const [loading, setLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [createdAt, setCreatedAt] = useState<string>("");
 
   useEffect(() => {
-    const fetchNews = async () => {
+    const fetchCase = async () => {
       try {
-        const news = await getCaseById(caseId);
-        if (!news) {
-          console.error("News not found");
+        const caseData = await getCaseById(caseId);
+        if (!caseData) {
+          console.error(t("case_not_found"));
           return;
         }
-        setTitle(news.title || "");
-        setDesc(news.desc || "");
-        setCity(news.city || "");
-        setExistingImage(news.image || null);
+        setCompanyName(caseData.title || "");
+        setDesc(caseData.desc || "");
+        setCity(caseData.city || "");
+        setExistingImage(caseData.image || null);
 
         setCreatedAt(
-          news.created_at
-            ? new Date(news.created_at).toISOString().split("T")[0]
+          caseData.created_at
+            ? new Date(caseData.created_at).toISOString().split("T")[0]
             : ""
         );
       } catch (error) {
-        console.error("Failed to fetch news:", error);
+        console.error(t("failed_to_fetch_case"), error);
       }
     };
 
-    fetchNews();
+    fetchCase();
   }, [caseId]);
 
-  const handleUpdateNews = async (e: React.FormEvent) => {
+  const handleUpdateCase = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    if (!title || !desc || !city) {
+    if (!companyName || !desc || !city) {
       setErrors({
-        title: !title ? "Titel er påkrævet" : "",
-        desc: !desc ? "Beskrivelse er påkrævet" : "",
-        city: !city ? "By er påkrævet" : "",
+        companyName: !companyName ? t("company_name_required") : "",
+        desc: !desc ? t("description_required") : "",
+        city: !city ? t("city_required") : "",
         image: "",
-
         created_at: "",
       });
       setLoading(false);
@@ -73,7 +73,7 @@ const UpdateCase = ({
     try {
       const formData = new FormData();
       formData.append("caseId", caseId.toString());
-      formData.append("title", title);
+      formData.append("companyName", companyName);
       formData.append("desc", desc);
       formData.append("city", city);
       formData.append("createdAt", createdAt);
@@ -82,14 +82,14 @@ const UpdateCase = ({
 
       await updateCase(
         caseId,
-        title,
+        companyName,
         desc,
         city,
         image || undefined,
         createdAt
       );
 
-      onNewsUpdated();
+      onCaseUpdated();
       setShowToast(true);
       setTimeout(() => setShowToast(false), 3000);
     } catch (error) {
@@ -113,40 +113,40 @@ const UpdateCase = ({
 
   return (
     <div className="flex flex-col gap-3 w-full p-3">
-      <span className="text-lg font-bold">Update News</span>
+      <span className="text-lg font-bold">{t("case_editing")}</span>
 
       <form
-        onSubmit={handleUpdateNews}
+        onSubmit={handleUpdateCase}
         className="flex flex-col items-start gap-5 w-full"
       >
-        <fieldset className="flex flex-col lg:flex-row gap-5 lg:gap-14 w-full">
-          <legend className="sr-only">News Details</legend>
+        <div className="flex flex-col lg:flex-row gap-5 lg:gap-14 w-full">
           <div className="flex flex-col gap-5 items-center">
             <fieldset className="flex flex-col gap-2 relative w-full">
               <legend className="form-control">
                 <div className="label">
-                  <span className="label-text">Title</span>
+                  <span className="label-text">{t("company_name")}</span>
                 </div>
               </legend>
               <input
-                name="title"
+                name="companyName"
                 type="text"
                 className="input input-bordered input-md"
-                placeholder="Enter a news title..."
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                placeholder={t("write_company_name")}
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
                 required
               />
-              {errors.title && (
+              {errors.companyName && (
                 <span className="absolute -bottom-4 text-xs text-red-500">
-                  {errors.title}
+                  {errors.companyName}
                 </span>
               )}
             </fieldset>
+
             <fieldset className="flex flex-col gap-2 relative w-full">
               <legend className="form-control">
                 <div className="label">
-                  <span className="label-text">Description</span>
+                  <span className="label-text">{t("description")}</span>
                 </div>
               </legend>
               <textarea
@@ -155,7 +155,7 @@ const UpdateCase = ({
                 value={desc}
                 onChange={handleDescChange}
                 required
-                placeholder="Write a short news article..."
+                placeholder={t("write_case_description")}
                 style={{ resize: "none" }}
                 cols={30}
                 rows={8}
@@ -173,14 +173,14 @@ const UpdateCase = ({
             <fieldset className="flex flex-col gap-2 relative w-full">
               <legend className="form-control">
                 <div className="label">
-                  <span className="label-text">City/Area</span>
+                  <span className="label-text">{t("city")}</span>
                 </div>
               </legend>
               <input
                 name="city"
                 type="text"
                 className="input input-bordered input-md"
-                placeholder="Enter city or area..."
+                placeholder={t("enter_city_area")}
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 required
@@ -194,7 +194,7 @@ const UpdateCase = ({
             <fieldset className="flex flex-col gap-2 relative w-full">
               <legend className="form-control">
                 <div className="label">
-                  <span className="label-text">Creation Date</span>
+                  <span className="label-text">{t("creation_date")}</span>
                 </div>
               </legend>
               <input
@@ -216,7 +216,7 @@ const UpdateCase = ({
             <fieldset className="flex flex-col gap-2 relative w-full">
               <legend className="form-control">
                 <div className="label">
-                  <span className="label-text">Update Image</span>
+                  <span className="label-text">{t("images_update")}</span>
                 </div>
               </legend>
               <input
@@ -234,7 +234,7 @@ const UpdateCase = ({
                 <div className="relative w-full overflow-hidden rounded-md h-0 pb-[56.25%]">
                   <Image
                     src={existingImage}
-                    alt="Existing"
+                    alt={t("existing_image")}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     style={{ objectFit: "cover" }}
@@ -243,19 +243,19 @@ const UpdateCase = ({
               )}
             </fieldset>
           </div>
-        </fieldset>
+        </div>
         <button
           type="submit"
           className="btn btn-primary mt-2"
           disabled={loading}
         >
-          {loading ? "Updating" : "Update News"}
+          {loading ? t("editing") : t("save")}
         </button>
       </form>
       {showToast && (
         <div className="toast bottom-20 md:bottom-0 toast-end">
           <div className="alert alert-success text-neutral-content">
-            <span className="text-base md:text-lg">News updated</span>
+            <span className="text-base md:text-lg">{t("case_updated")}</span>
           </div>
         </div>
       )}

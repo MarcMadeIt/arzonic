@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { createReview } from "@/lib/server/actions";
 import CreateRating from "./CreateRating";
+import { t } from "i18next";
 
 interface CreateReviewProps {
   onReviewCreated: () => void;
@@ -26,9 +27,9 @@ const CreateReview = ({ onReviewCreated }: CreateReviewProps) => {
 
     if (!name || !desc || !city) {
       setErrors({
-        name: !name ? "Name is required" : "",
-        city: !city ? "City is required" : "",
-        desc: !desc ? "Description is required" : "",
+        name: !name ? t("company_name_required") : "",
+        city: !city ? t("city_required") : "",
+        desc: !desc ? t("desc_required") : "",
       });
       setLoading(false);
       return;
@@ -52,7 +53,7 @@ const CreateReview = ({ onReviewCreated }: CreateReviewProps) => {
 
   return (
     <div className="flex flex-col gap-3 w-full p-3">
-      <span className="text-lg font-bold">Create Review</span>
+      <span className="text-lg font-bold">{t("review_creation")}</span>
       <form
         onSubmit={handleSubmit}
         className="flex flex-col items-start gap-5 w-full"
@@ -64,7 +65,7 @@ const CreateReview = ({ onReviewCreated }: CreateReviewProps) => {
         </div>
         <div className="flex flex-col gap-2 relative w-full">
           <fieldset className="fieldset">
-            <legend className="fieldset-legend">Name</legend>
+            <legend className="fieldset-legend">{t("company_name")}</legend>
             <input
               type="text"
               className="input input-bordered input-md"
@@ -82,7 +83,7 @@ const CreateReview = ({ onReviewCreated }: CreateReviewProps) => {
         </div>
         <div className="flex flex-col gap-2 relative w-full">
           <fieldset className="fieldset">
-            <legend className="fieldset-legend">Company</legend>
+            <legend className="fieldset-legend">{t("city")}</legend>
             <input
               type="text"
               className="input input-bordered input-md"
@@ -100,14 +101,14 @@ const CreateReview = ({ onReviewCreated }: CreateReviewProps) => {
         </div>
         <div className="flex flex-col gap-2 relative w-full">
           <fieldset className="fieldset">
-            <legend className="fieldset-legend">Description</legend>
+            <legend className="fieldset-legend">{t("description")}</legend>
             <textarea
               name="desc"
               className="textarea textarea-bordered textarea-md text"
               value={desc}
               onChange={handleDescChange}
               required
-              placeholder="Write a short review..."
+              placeholder={t("write_desc")}
               style={{ resize: "none" }}
               cols={30}
               rows={5}
@@ -124,7 +125,7 @@ const CreateReview = ({ onReviewCreated }: CreateReviewProps) => {
         </div>
 
         <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? "Creating..." : "Create Review"}
+          {loading ? t("creating") : t("create")}
         </button>
       </form>
     </div>

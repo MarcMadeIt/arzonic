@@ -1,5 +1,6 @@
 import React from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+import { t } from "i18next";
 
 interface ReviewPaginationProps {
   page: number;
@@ -31,7 +32,9 @@ const ReviewsPagination = ({ page, setPage, total }: ReviewPaginationProps) => {
       >
         <FaAngleLeft />
       </button>
-      <span className="join-item btn bg-base-100">Side {page}</span>
+      <span className="join-item btn bg-base-100">
+        {t("site")} {page}
+      </span>
       <button
         className="join-item btn bg-base-100"
         onClick={handleNext}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { updateReview, getReviewById } from "@/lib/server/actions";
 import CreateRating from "../createReview/CreateRating";
+import { t } from "i18next";
 
 interface UpdateReviewProps {
   reviewId: number;
@@ -43,9 +44,9 @@ const UpdateReview = ({ reviewId, onReviewUpdated }: UpdateReviewProps) => {
 
     if (!name || !desc || !city) {
       setErrors({
-        name: !name ? "Name is required" : "",
-        city: !city ? "City is required" : "",
-        desc: !desc ? "Description is required" : "",
+        name: !name ? t("company_name_required") : "",
+        city: !city ? t("city_required") : "",
+        desc: !desc ? t("desc_required") : "",
       });
       setLoading(false);
       return;
@@ -70,7 +71,9 @@ const UpdateReview = ({ reviewId, onReviewUpdated }: UpdateReviewProps) => {
 
   return (
     <div className="flex flex-col gap-3 w-full p-3">
-      <span className="text-lg font-bold">Update Review</span>
+      <span className="text-lg font-bold">
+        {t("edit")} {t("review")}
+      </span>
       <form
         onSubmit={handleUpdateReview}
         className="flex flex-col items-start gap-5 w-full"
@@ -82,7 +85,7 @@ const UpdateReview = ({ reviewId, onReviewUpdated }: UpdateReviewProps) => {
         </div>
         <div className="flex flex-col gap-2 relative w-full">
           <fieldset className="fieldset">
-            <legend className="fieldset-legend">Name</legend>
+            <legend className="fieldset-legend">{t("company_name")}</legend>
             <input
               type="text"
               className="input input-bordered input-md"
@@ -100,7 +103,7 @@ const UpdateReview = ({ reviewId, onReviewUpdated }: UpdateReviewProps) => {
         </div>
         <div className="flex flex-col gap-2 relative w-full">
           <fieldset className="fieldset">
-            <legend className="fieldset-legend">City</legend>
+            <legend className="fieldset-legend">{t("city")}</legend>
             <input
               type="text"
               className="input input-bordered input-md"
@@ -118,14 +121,14 @@ const UpdateReview = ({ reviewId, onReviewUpdated }: UpdateReviewProps) => {
         </div>
         <div className="flex flex-col gap-2 relative w-full">
           <fieldset className="fieldset">
-            <legend className="fieldset-legend">Description</legend>
+            <legend className="fieldset-legend">{t("description")}</legend>
             <textarea
               name="desc"
               className="textarea textarea-bordered textarea-md text"
               value={desc}
               onChange={handleDescChange}
               required
-              placeholder="Write a short review..."
+              placeholder={t("write_desc")}
               style={{ resize: "none" }}
               cols={30}
               rows={8}
@@ -142,7 +145,7 @@ const UpdateReview = ({ reviewId, onReviewUpdated }: UpdateReviewProps) => {
         </div>
 
         <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? "Updating..." : "Update Review"}
+          {loading ? t("saving") : t("save")}
         </button>
       </form>
     </div>

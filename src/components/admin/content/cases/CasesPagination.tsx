@@ -1,5 +1,6 @@
 import React from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
 
 interface NewsPaginationProps {
   page: number;
@@ -8,6 +9,7 @@ interface NewsPaginationProps {
 }
 
 const CasesPagination = ({ page, setPage, total }: NewsPaginationProps) => {
+  const { t } = useTranslation();
   const totalPages = Math.ceil(total / 6);
 
   const handlePrevious = () => {
@@ -31,7 +33,9 @@ const CasesPagination = ({ page, setPage, total }: NewsPaginationProps) => {
       >
         <FaAngleLeft />
       </button>
-      <span className="join-item btn bg-base-100">Side {page}</span>
+      <span className="join-item btn bg-base-100">
+        {t("site")} {page}
+      </span>
       <button
         className="join-item btn bg-base-100"
         onClick={handleNext}

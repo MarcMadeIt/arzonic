@@ -7,8 +7,10 @@ import ReviewsPagination from "./ReviewsPagination";
 import CreateReview from "./createReview/CreateReview";
 import UpdateReview from "./updateReview/UpdateReview";
 import { FaAngleLeft } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
 
 const Reviews = () => {
+  const { t } = useTranslation();
   const [view, setView] = useState<"cards" | "list">("cards");
   const [showCreateReview, setShowCreateReview] = useState(false);
   const [showUpdateReview, setShowUpdateReview] = useState(false);
@@ -42,7 +44,7 @@ const Reviews = () => {
             className="btn btn-ghost"
           >
             <FaAngleLeft />
-            Back
+            {t("back")}
           </button>
           <CreateReview onReviewCreated={handleReviewCreated} />
         </div>
@@ -53,7 +55,7 @@ const Reviews = () => {
             className="btn btn-ghost"
           >
             <FaAngleLeft />
-            Back
+            {t("back")}
           </button>
           <UpdateReview
             reviewId={selectedReviewId}
@@ -67,7 +69,7 @@ const Reviews = () => {
               onClick={() => setShowCreateReview(true)}
               className="btn btn-primary"
             >
-              Create Review
+              {t("create")} {t("review")}
             </button>
             <ReviewsListChange onViewChange={handleViewChange} />
           </div>
@@ -96,9 +98,7 @@ const Reviews = () => {
         <div className="toast toast-end">
           <div className="alert alert-success">
             <span className="text-base md:text-lg">
-              {showCreateReview
-                ? "Anmeldelse oprettet"
-                : "Anmeldelse opdateret"}
+              {showCreateReview ? t("review_created") : t("review_updated")}
             </span>
           </div>
         </div>
