@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
+import React from "react";
+import I18nProvider from "@/i18n/i18nProvidedr";
 
 const outfitSans = Outfit({
   subsets: ["latin"],
@@ -23,7 +25,10 @@ export default function RootLayout({
         {/* SLET DENNE UNDER, NÅR FÆRDIG, DET LUKKER FOR SEO  */}
         <meta name="robots" content="noindex, nofollow" />
       </head>
-      <body className={outfitSans.className}>{children}</body>
+      <body className={outfitSans.className}>
+        {" "}
+        <I18nProvider>{children}</I18nProvider>
+      </body>
     </html>
   );
 }

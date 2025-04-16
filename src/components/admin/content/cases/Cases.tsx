@@ -7,8 +7,10 @@ import CreateCase from "./createCase/CreateCase";
 import UpdateCase from "./updateCase/UpdateCase";
 import CasesListChange from "./CasesListChange";
 import CasesList from "./CasesList";
+import { useTranslation } from "react-i18next";
 
 const Cases = () => {
+  const { t } = useTranslation();
   const [view, setView] = useState<"cards" | "list">("cards");
   const [showCreateCase, setShowCreateCase] = useState(false);
   const [showUpdateCase, setShowUpdateCase] = useState(false);
@@ -42,7 +44,7 @@ const Cases = () => {
             className="btn btn-ghost"
           >
             <FaAngleLeft />
-            Back
+            {t("back")}
           </button>
           <CreateCase onCaseCreated={handleCaseCreated} />
         </div>
@@ -53,10 +55,10 @@ const Cases = () => {
             className="btn btn-ghost"
           >
             <FaAngleLeft />
-            Back
+            {t("back")}
           </button>
           <UpdateCase
-            newsId={selectedCaseId}
+            caseId={selectedCaseId}
             onNewsUpdated={handleCaseUpdated}
           />
         </div>
@@ -67,7 +69,7 @@ const Cases = () => {
               onClick={() => setShowCreateCase(true)}
               className="btn btn-primary"
             >
-              Create Case
+              {t("create")} Case
             </button>
             <CasesListChange onViewChange={handleViewChange} />
           </div>
@@ -91,7 +93,7 @@ const Cases = () => {
         <div className="toast bottom-20 md:bottom-0 toast-end">
           <div className="alert alert-success text-neutral-content">
             <span className="text-base md:text-lg">
-              {showCreateCase ? "Sag oprettet" : "Sag opdateret"}
+              {showCreateCase ? t("case_created") : t("case_updated")}
             </span>
           </div>
         </div>

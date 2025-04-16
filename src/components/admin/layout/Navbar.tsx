@@ -1,17 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaComment, FaGear, FaHouse, FaList } from "react-icons/fa6";
 import { readUserSession } from "@/lib/auth/readUserSession";
 import Image from "next/image";
-
+import { useTranslation } from "react-i18next";
+import "@/i18n/config";
 
 const Navbar = () => {
   const pathname = usePathname();
   const [role, setRole] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     (async () => {
@@ -38,7 +39,7 @@ const Navbar = () => {
                 className={pathname === "/admin" ? "menu-active" : ""}
                 href="/admin"
               >
-                Overview
+                {t("overview")}
               </Link>
             </li>
             <li>
@@ -46,7 +47,7 @@ const Navbar = () => {
                 className={pathname === "/admin/content" ? "menu-active" : ""}
                 href="/admin/content"
               >
-                Content
+                {t("content")}
               </Link>
             </li>
             <li>
@@ -54,16 +55,18 @@ const Navbar = () => {
                 className={pathname === "/admin/messages" ? "menu-active" : ""}
                 href="/admin/messages"
               >
-                Requests
+                {t("requests")}
               </Link>
             </li>
             {role === "admin" && (
               <li>
                 <Link
-                  className={pathname === "/admin/settings" ? "menu-active" : ""}
+                  className={
+                    pathname === "/admin/settings" ? "menu-active" : ""
+                  }
                   href="/admin/settings"
                 >
-                  Settings
+                  {t("settings")}
                 </Link>
               </li>
             )}
@@ -95,7 +98,6 @@ const Navbar = () => {
                 <FaComment size={25} />
               </Link>
             </li>
-            {/* {role === "admin" && ( */}
             <li>
               <Link
                 href="/admin/settings"
@@ -104,14 +106,13 @@ const Navbar = () => {
                 <FaGear size={25} />
               </Link>
             </li>
-            {/* )} */}
           </ul>
         </div>
       </div>
       <div className="flex flex-col gap-10 items-center justify-center w-full p-4 absolute bottom-0">
-        <span className="text-zinc-400 text-[11px] flex items-center justify-center">
+        <span className="text-zinc-500 text-[11px] flex items-center justify-center gap-0.5">
           © {new Date().getFullYear()} Powered by{" "}
-          <span className="font-semibold">Arzonic</span>
+          <span className="font-bold">Arzonic</span>
         </span>
       </div>
     </div>

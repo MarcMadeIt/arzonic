@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { FaLocationDot, FaPen, FaTrash } from "react-icons/fa6";
 import { getAllReviews, deleteReview } from "@/lib/server/actions";
 import ReviewsRating from "./ReviewsRating";
+import { t } from "i18next";
 
 interface ReviewsListProps {
   view: "cards" | "list";
@@ -71,11 +72,11 @@ const ReviewsList = ({
       {loading ? (
         <div className="flex justify-center gap-3 items-center">
           <span className="loading loading-spinner loading-md"></span>
-          Loading Reviews...
+          Loading {t("reviews")}...
         </div>
       ) : reviewItems.length === 0 ? (
         <div className="flex justify-center items-center h-40">
-          <p className="text-lg text-gray-500">No review available</p>
+          <p className="text-lg text-gray-500">{t("no_reviews")}</p>
         </div>
       ) : (
         <>
@@ -162,17 +163,11 @@ const ReviewsList = ({
       {isModalOpen && (
         <div className="modal modal-open">
           <div className="modal-box">
-            <h3 className="font-bold text-lg">Bekræft sletning</h3>
-            <p className="py-4">
-              Er du sikker på, at du vil slette denne anmeldelse?
-            </p>
+            <h3 className="font-bold text-lg">{t("confirm_delete")}</h3>
+            <p className="py-4">{t("delete_confirmation")}</p>
             <div className="modal-action">
-              <button className="btn" onClick={closeModal}>
-                Annuller
-              </button>
-              <button className="btn btn-error" onClick={handleDelete}>
-                Slet
-              </button>
+              <button className="btn">{t("cancel")}</button>
+              <button className="btn btn-error">{t("delete")}</button>
             </div>
           </div>
         </div>

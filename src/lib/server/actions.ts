@@ -487,6 +487,10 @@ export async function getCaseById(caseId: number) {
   const supabase = await createServerClientInstance();
 
   try {
+    if (!caseId) {
+      throw new Error(`Invalid case ID: Received ${caseId}`);
+    }
+
     const { data, error } = await supabase
       .from("cases")
       .select("*")

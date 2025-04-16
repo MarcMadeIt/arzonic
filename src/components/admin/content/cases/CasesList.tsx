@@ -4,6 +4,7 @@ import { FaPen, FaTrash } from "react-icons/fa6";
 import { getAllCases, deleteCase } from "@/lib/server/actions";
 import UpdateCase from "./updateCase/UpdateCase";
 import ReactCompareImage from "react-compare-image";
+import { useTranslation } from "react-i18next";
 
 interface CasesListProps {
   view: "cards" | "list";
@@ -14,7 +15,7 @@ interface CasesListProps {
 
 interface CaseItem {
   id: number;
-  title: string;
+  company_name: string;
   desc: string | null;
   formType: "normal" | "beforeAfter";
   image: string | null;
@@ -25,6 +26,7 @@ interface CaseItem {
 const FALLBACK_IMAGE = "/demo.jpg";
 
 const CasesList = ({ view, page, setTotal, onEditCase }: CasesListProps) => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState<boolean>(true);
   const [caseItems, setCaseItems] = useState<CaseItem[]>([]);
   const [editingCaseId, setEditingCaseId] = useState<number | null>(null);
@@ -92,11 +94,11 @@ const CasesList = ({ view, page, setTotal, onEditCase }: CasesListProps) => {
       {loading ? (
         <div className="flex justify-center gap-3 items-center">
           <span className="loading loading-spinner loading-md"></span>
-          Loading Cases...
+          {t("loading_cases")}
         </div>
       ) : caseItems.length === 0 ? (
         <div className="flex justify-center items-center h-40">
-          <p className="text-lg text-gray-500">No cases available</p>
+          <p className="text-lg text-gray-500">{t("no_cases")}</p>
         </div>
       ) : editingCaseId ? (
         <UpdateCase caseId={editingCaseId} onNewsUpdated={handleCaseUpdated} />
@@ -107,36 +109,21 @@ const CasesList = ({ view, page, setTotal, onEditCase }: CasesListProps) => {
               {caseItems.map((item) => (
                 <div
                   key={item.id}
-                  className="card card-compact shadow-lg rounded-md"
+                  className="card card-compact shadow- ring-2 ring-base-100 rounded-md"
                 >
                   <figure className="relative w-full aspect-[4/3] h-56 md:h-40 xl:h-56 overflow-hidden">
-                    {item.formType === "beforeAfter" ? (
-                      <div className=" w-full h-auto">
-                        <ReactCompareImage
-                          leftImage={item.imageAfter}
-                          rightImage={item.imageBefore}
-                          sliderPositionPercentage={0.9}
-                          sliderLineColor="#ffffff"
-                          leftImageAlt="Efter billede"
-                          rightImageAlt="Før billede"
-                          handleSize={35}
-                          sliderLineWidth={2}
-                        />
-                      </div>
-                    ) : (
-                      <div className="relative w-full h-full">
-                        <Image
-                          src={item.image || FALLBACK_IMAGE}
-                          alt={item.title}
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          className="object-cover"
-                        />
-                      </div>
-                    )}
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={item.image || FALLBACK_IMAGE}
+                        alt={item.company_name}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover"
+                      />
+                    </div>
                   </figure>
                   <div className="card-body">
-                    <h2 className="card-title text-lg">{item.title}</h2>
+                    <h2 className="card-title text-lg">{item.company_name}</h2>
                     <p className="text-xs">
                       {truncateDescription(item.desc, 100)}
                     </p>
@@ -146,7 +133,7 @@ const CasesList = ({ view, page, setTotal, onEditCase }: CasesListProps) => {
                         onClick={() => onEditCase(item.id)}
                       >
                         <FaPen />
-                        Rediger
+                        {t("edit")}
                       </button>
                       <button
                         className="btn btn-sm"
@@ -156,6 +143,7 @@ const CasesList = ({ view, page, setTotal, onEditCase }: CasesListProps) => {
                         }}
                       >
                         <FaTrash />
+                        {t("delete")}
                       </button>
                     </div>
                   </div>
@@ -171,23 +159,17 @@ const CasesList = ({ view, page, setTotal, onEditCase }: CasesListProps) => {
                       <div className="flex gap-2 items-center">
                         <div className="relative w-12 h-10 rounded-md overflow-hidden">
                           <Image
-                            src={
-                              item.formType === "beforeAfter"
-                                ? item.imageBefore ||
-                                  item.imageAfter ||
-                                  FALLBACK_IMAGE
-                                : item.image || FALLBACK_IMAGE
-                            }
-                            alt={item.title}
+                            src={item.image || FALLBACK_IMAGE}
+                            alt={item.company_name}
                             fill
                             style={{ objectFit: "cover" }}
                           />
                         </div>
                         <h3 className="font-semibold text-xs hidden sm:block">
-                          {item.title}
+                          {item.company_name}
                         </h3>
                         <h3 className="font-semibold text-xs block sm:hidden">
-                          {truncateTitle(item.title, 20)}
+                          {truncateTitle(item.company_name, 20)}
                         </h3>
                       </div>
                       <div className="flex gap-5 md:gap-2">
@@ -196,7 +178,7 @@ const CasesList = ({ view, page, setTotal, onEditCase }: CasesListProps) => {
                           onClick={() => onEditCase(item.id)}
                         >
                           <FaPen />
-                          <span className="md:flex hidden"> Rediger </span>
+                          <span className="md:flex hidden"> {t("edit")} </span>
                         </button>
                         <button
                           className="btn btn-sm"
@@ -206,7 +188,10 @@ const CasesList = ({ view, page, setTotal, onEditCase }: CasesListProps) => {
                           }}
                         >
                           <FaTrash />
-                          <span className="md:flex hidden"> Slet </span>
+                          <span className="md:flex hidden">
+                            {" "}
+                            {t("delete")}{" "}
+                          </span>
                         </button>
                       </div>
                     </div>
@@ -221,16 +206,14 @@ const CasesList = ({ view, page, setTotal, onEditCase }: CasesListProps) => {
       {isModalOpen && (
         <div className="modal modal-open">
           <div className="modal-box">
-            <h3 className="font-bold text-lg">Bekræft sletning</h3>
-            <p className="py-4">
-              Er du sikker på, at du vil slette denne case?
-            </p>
+            <h3 className="font-bold text-lg">{t("delete_confirmation")}</h3>
+            <p className="py-4">{t("delete_case_prompt")}</p>
             <div className="modal-action">
               <button className="btn" onClick={closeModal}>
-                Annuller
+                {t("cancel")}
               </button>
               <button className="btn btn-error" onClick={handleDelete}>
-                Slet
+                {t("delete")}
               </button>
             </div>
           </div>

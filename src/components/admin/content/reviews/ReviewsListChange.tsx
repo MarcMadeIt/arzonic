@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { t } from "i18next";
 
 interface ReviewListChangeProps {
   onViewChange: (view: "cards" | "list") => void;
@@ -19,14 +20,14 @@ const ReviewsListChange = ({ onViewChange }: ReviewListChangeProps) => {
         className={`tab ${activeView === "cards" ? "tab-active" : ""}`}
         onClick={() => handleViewChange("cards")}
       >
-        Cards
+        {t("cards")}
       </a>
       <a
         role="tab"
         className={`tab ${activeView === "list" ? "tab-active" : ""}`}
         onClick={() => handleViewChange("list")}
       >
-        Lists
+        {t("list")}
       </a>
     </div>
   );
