@@ -70,3 +70,32 @@
   --depth: 1;
   --noise: 0;
 }
+
+/* ==========================================================================
+   Custom styles for the NavProcess component
+   ========================================================================== */
+
+/* NavProcess: default state, spanning the full width. */
+.nav-process {
+  @apply w-full bg-base-100 p-4 z-10;
+}
+
+/* Sticky state: fix the navbar to the top, left, and right edges. */
+.nav-process.sticky {
+  @apply fixed top-0 left-0 right-0 shadow-md w-full;
+}
+
+/* Inner content container: centers child elements both horizontally and text-wise */
+.nav-process-content {
+  @apply container mx-auto text-center;
+}
+
+/* Progress bar container styling */
+.progress-bar-container {
+  @apply bg-neutral h-2 mt-2 rounded-full overflow-hidden;
+}
+
+/* Progress bar fill: width updated dynamically in React */
+.progress-bar-fill {
+  @apply h-full bg-primary transition-all duration-200;
+}
