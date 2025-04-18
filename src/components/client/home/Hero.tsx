@@ -16,18 +16,16 @@ const Hero = () => {
             <div className="flex relative">
               <Image src="/danmark.png" alt="" width={50} height={50} />
             </div>
-            <h1 className="text-xl sm:text-4xl text-white">
-              MODERN WEB AGENCY
-            </h1>
+            <h1 className="text-xl sm:text-4xl">MODERN WEB AGENCY</h1>
           </div>
           <div>
-            <p className="text-sm sm:text-base text-white">
+            <p className="text-sm sm:text-base ">
               We specialize in building high-performance websites and immersive
               3D experiences using modern, custom-built technology — no
               templates, no WordPress.
             </p>
           </div>
-          <div className="flex gap-2 text-sm sm:text-lg text-white">
+          <div className="flex gap-2 text-sm sm:text-lg ">
             <span>Custom Websites</span>
             <span>3D Design</span>
             <span>Web Applications</span>
